@@ -1,0 +1,11 @@
+.app-curated-playlist-likes {
+    @apply flex items-center justify-start gap-x-3;
+
+    .icon {
+        @apply w-6 h-6 block;
+    }
+
+    .likes {
+        @apply font-quicksand text-lg text-white-pure;
+    }
+}

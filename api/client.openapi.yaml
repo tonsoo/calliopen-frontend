@@ -1,0 +1,1162 @@
+openapi: 3.0.0
+info:
+  title: CalliOpen API.
+  version: 1.0.0
+  description: API documentation for CalliOpen.
+servers:
+  - url: http://localhost:9912/api
+  - url: https://calliopen.com.br
+
+paths:
+  /auth/login:
+    post:
+      summary: Authenticate user and get token
+      operationId: authLogin
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        200:
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Authentication token
+                  type:
+                    type: string
+                    example: bearer
+        401:
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid credentials
+        404:
+          description: Client doesn"t exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Client doesn"t exist
+        500:
+          description: Unknown error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unknown error
+        422:
+          $ref: "#/components/responses/ValidationError"
+
+  /auth/register:
+    post:
+      summary: Register a new user
+      operationId: authRegister
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        200:
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+        409:
+          description: Client with given data already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Client with given data already exists
+        422:
+          $ref: "#/components/responses/ValidationError"
+
+  /user:
+    get:
+      summary: Get authenticated user"s information
+      operationId: getUserInformation
+      tags:
+        - User
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: User information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /user/{clientUuid}:
+    get:
+      summary: Get another user"s public information by UUID
+      operationId: getOtherUserInformation
+      tags:
+        - User
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: clientUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the client
+      responses:
+        200:
+          description: Other user"s basic information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicClient"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        404:
+          description: Client not found
+
+  /user/{clientUuid}/playlists:
+    get:
+      summary: Get all playlists for a specific user
+      operationId: getUserPlaylists
+      tags:
+        - Playlists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: clientUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the client
+      responses:
+        200:
+          description: List of playlists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Playlist"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        403:
+          $ref: "#/components/responses/ForbiddenError"
+        404:
+          description: Client not found
+
+  /user/{clientUuid}/playlists/create:
+    post:
+      summary: Create a new playlist for a user
+      operationId: createPlaylist
+      tags:
+        - Playlists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: clientUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePlaylistRequest"
+      responses:
+        201:
+          description: Playlist created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Playlist"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        403:
+          $ref: "#/components/responses/ForbiddenError"
+        422:
+          $ref: "#/components/responses/ValidationError"
+
+  /user/{clientUuid}/playlists/{playlistUuid}:
+    get:
+      summary: Get a specific playlist by UUID
+      operationId: getSpecificPlaylist
+      tags:
+        - Playlists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: clientUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the client
+        - name: playlistUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the playlist
+      responses:
+        200:
+          description: Specific playlist details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Playlist"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        403:
+          description: Private playlist or forbidden access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Private playlist
+        404:
+          description: Playlist not found
+
+  /user/{clientUuid}/playlists/{playlistUuid}/songs:
+    get:
+      summary: Get songs for a specific playlist
+      operationId: getPlaylistSongs
+      tags:
+        - Playlists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: clientUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the client
+        - name: playlistUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the playlist
+      responses:
+        200:
+          description: List of songs in the playlist (including pivot data)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PlaylistSong"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        403:
+          description: Private playlist or forbidden access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Private playlist
+        404:
+          description: Playlist not found
+
+  /user/{clientUuid}/playlists/{playlistUuid}/add/{songUuid}:
+    post:
+      summary: Add a song to a playlist
+      operationId: addSongToPlaylist
+      tags:
+        - Playlists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: clientUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the client
+        - name: playlistUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the playlist
+        - name: songUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the song to add
+      responses:
+        200:
+          description: Song added to playlist successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Playlist"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        403:
+          description: Private playlist or forbidden access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Private playlist
+        404:
+          description: Client, Playlist, or Song not found
+        409:
+          description: Conflict (e.g., Song already in playlist)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Song already in playlist
+        500:
+          description: Failed to add song to playlist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Failed to add song to playlist.
+
+  /user/{clientUuid}/playlists/{playlistUuid}/remove/{songUuid}:
+    post:
+      summary: Remove a song from a playlist
+      operationId: removeSongFromPlaylist
+      tags:
+        - Playlists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: clientUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the client
+        - name: playlistUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the playlist
+        - name: songUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the song to remove
+      responses:
+        200:
+          description: Song removed from playlist successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Playlist"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        403:
+          description: Private playlist or forbidden access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Private playlist
+        404:
+          description: Client, Playlist, or Song not found
+
+  /user/{clientUuid}/playlists/{playlistUuid}/order:
+    post:
+      summary: Reorder songs in a playlist
+      operationId: reorderPlaylistSongs
+      tags:
+        - Playlists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: clientUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the client
+        - name: playlistUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the playlist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uuids:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  description: An ordered list of song UUIDs representing the new order.
+                  example: ["song-uuid-1", "song-uuid-2", "song-uuid-3"]
+      responses:
+        200:
+          description: Playlist order updated successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PlaylistSong"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        403:
+          description: Private playlist or forbidden access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Private playlist
+        404:
+          description: Client or Playlist not found
+        409:
+          description: Conflict (e.g., duplicate UUIDs or song not found)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Duplicate uuids provided
+        422:
+          $ref: "#/components/responses/ValidationError"
+
+  /artists:
+    get:
+      summary: Get all artists
+      operationId: getAllArtists
+      tags:
+        - Artists
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: List of artists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Author"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+  /artists/me:
+    get:
+      summary: Get authenticated artist"s information
+      operationId: getMyArtistInformation
+      tags:
+        - Artists
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: Authenticated artist information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Author"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        404:
+          description: Authenticated user is not an artist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: You are not an artist.
+
+  /artists/{authorUuid}:
+    get:
+      summary: Get specific artist"s information by UUID
+      operationId: getArtistInformation
+      tags:
+        - Artists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: authorUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the artist
+      responses:
+        200:
+          description: Artist information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Author"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        404:
+          description: Artist not found
+
+  /artists/{authorUuid}/songs/{albumUuid}:
+    get:
+      summary: Get songs by a specific artist within an album
+      operationId: getArtistAlbumSongs
+      tags:
+        - Artists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: authorUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the artist
+        - name: albumUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the album
+      responses:
+        200:
+          description: List of songs in the album
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Song"
+        400:
+          description: Arguments mismatch
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Arguments mismatch
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        404:
+          description: Artist or Album not found
+
+  /artists/{authorUuid}/songs/publish:
+    post:
+      summary: Publish a new song by an artist
+      operationId: publishSong
+      tags:
+        - Artists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: authorUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the artist
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PublishSongRequest"
+      responses:
+        200:
+          description: Song published successfully (returns no content by default, can be updated)
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        403:
+          description: Not author
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not author
+        422:
+          $ref: "#/components/responses/ValidationError"
+        500:
+          description: Internal Server Error (e.g., conversion failed)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error during song publishing.
+
+  /artists/{authorUuid}/songs/{songUuid}/remove:
+    post:
+      summary: Remove a song published by an artist
+      operationId: removeArtistSong
+      tags:
+        - Artists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: authorUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the artist
+        - name: songUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the song to remove
+      responses:
+        200:
+          description: Song removed successfully (returns no content by default, can be updated)
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        403:
+          description: Not author
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not author
+        404:
+          description: Artist or Song not found
+
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - email_or_username
+        - password
+      properties:
+        email_or_username:
+          type: string
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          example: password
+
+    RegisterRequest:
+      type: object
+      required:
+        - name
+        - username
+        - email
+        - password
+      properties:
+        name:
+          type: string
+          example: John Doe
+        username:
+          type: string
+          example: johndoe
+        email:
+          type: string
+          format: email
+          example: john.doe@example.com
+        password:
+          type: string
+          format: password
+          example: strongpassword
+
+    CreatePlaylistRequest:
+      type: object
+      required:
+        - name
+        - is_public
+      properties:
+        name:
+          type: string
+          example: My Top Hits
+        is_public:
+          type: boolean
+          example: true
+        cover_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: UUID of the cover image File (optional)
+
+    PublishSongRequest:
+      type: object
+      required:
+        - album
+        - name
+        - cover
+        - track
+      properties:
+        album:
+          type: string
+          format: uuid
+          description: UUID of the album this song belongs to.
+          example: "0229a48a-5061-4558-815c-1d868f237117"
+        name:
+          type: string
+          example: Bohemian Rhapsody
+        cover:
+          type: string
+          format: binary
+          description: The cover image file (JPEG, PNG, etc., max 5MB).
+        lyrics:
+          type: string
+          nullable: true
+          example: Is this the real life? Is this just fantasy?
+        track:
+          type: string
+          format: binary
+          description: The audio track file (MP3, WAV, FLAC, etc., max 25MB).
+        is_explicit:
+          type: boolean
+          example: false
+
+    Client:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: The client"s unique identifier.
+        name:
+          type: string
+          description: The client"s full name.
+        email:
+          type: string
+          format: email
+          description: The client"s email address.
+        username:
+          type: string
+          description: The client"s username.
+        settings:
+          type: object
+          nullable: true
+          description: User settings as a JSON object.
+        avatar:
+          type: string
+          format: url
+          nullable: true
+          description: URL to the client"s avatar image.
+        is_artist:
+          type: boolean
+          description: Indicates if the client also has an artist profile.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the client was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the client was last updated.
+      example:
+        uuid: "6d75b583-9fd0-4382-ba0c-54f85a0d8c8e"
+        name: "Alysson"
+        email: "alyssoncaoa@hotmail.com"
+        username: "alyssuuu"
+        settings: {}
+        avatar: "http://localhost:9912/storage/avatars/default.jpg"
+        is_artist: true
+        created_at: "2025-06-14T20:33:52.000000Z"
+        updated_at: "2025-06-15T03:31:32.000000Z"
+
+    BasicClient:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: The client"s unique identifier.
+        username:
+          type: string
+          description: The client"s username.
+        avatar:
+          type: string
+          format: url
+          nullable: true
+          description: URL to the client"s avatar image.
+        is_artist:
+          type: boolean
+          description: Indicates if the client also has an artist profile.
+      example:
+        uuid: "6d75b583-9fd0-4382-ba0c-54f85a0d8c8e"
+        username: "alyssuuu"
+        avatar: "http://localhost:9912/storage/avatars/default.jpg"
+        is_artist: true
+
+    Author:
+      type: object
+      description: Represents an artist/author, linked to a client.
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: The author"s unique identifier.
+        name:
+          type: string
+          description: The author"s stage name or public name.
+        bio:
+          type: string
+          nullable: true
+          description: Biography of the artist.
+        client:
+          $ref: "#/components/schemas/BasicClient"
+          description: The associated client account for this artist.
+        albums:
+          type: array
+          items:
+            $ref: "#/components/schemas/Album"
+          description: Albums created by this artist.
+        links:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuthorLink"
+          description: External links for the artist (social media, etc.).
+      example:
+        uuid: "33fba4a6-7667-406b-8765-78e4891df8ab"
+        name: "My Favorite Artist"
+        bio: "A talented musician making waves in the industry."
+        client:
+          uuid: "6d75b583-9fd0-4382-ba0c-54f85a0d8c8e"
+          username: "alyssuuu"
+        albums: []
+        links: []
+
+    AuthorLink:
+      type: object
+      description: External link associated with an artist.
+      properties:
+        name:
+          type: string
+          description: Name of the link (e.g., "Spotify", "Instagram").
+        url:
+          type: string
+          format: url
+          description: The URL of the link.
+        image:
+          type: string
+          format: url
+          description: URL to an image representing the link (e.g., logo).
+        order:
+          type: integer
+          description: Display order of the link.
+        is_visible:
+          type: boolean
+          description: Whether the link should be publicly visible.
+      example:
+        name: "Spotify"
+        url: "https://open.spotify.com/artist/..."
+        image: "http://localhost:9912/storage/link_images/spotify.png"
+        order: 1
+        is_visible: true
+
+    Album:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: The album"s unique identifier.
+        name:
+          type: string
+          description: The name of the album.
+        cover:
+          type: string
+          format: url
+          description: URL to the album cover image.
+        creator:
+          $ref: "#/components/schemas/Author"
+          description: The artist who created this album.
+      example:
+        uuid: "0229a48a-5061-4558-815c-1d868f237117"
+        name: "Debut Album"
+        cover: "http://localhost:9912/storage/albums/covers/debut.jpg"
+        creator:
+          uuid: "33fba4a6-7667-406b-8765-78e4891df8ab"
+          name: "My Favorite Artist"
+
+    Song:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: The song"s unique identifier.
+        name:
+          type: string
+          description: The title of the song.
+        album:
+          $ref: "#/components/schemas/Album"
+          description: The album this song belongs to.
+        cover:
+          type: string
+          format: url
+          nullable: true
+          description: URL to the song"s cover image.
+        lyrics:
+          type: string
+          nullable: true
+          description: The lyrics of the song.
+        is_explicit:
+          type: boolean
+          description: Indicates if the song contains explicit content.
+        views:
+          type: integer
+          description: Number of times the song has been viewed/played.
+        file:
+          type: string
+          format: url
+          description: URL to the song"s audio file.
+        duration:
+          type: integer
+          description: Duration of the song in milliseconds.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the song was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the song was last updated.
+      example:
+        uuid: "dea8869f-add5-488c-a4f6-ce4e29e698c4"
+        name: "Example Song Title"
+        album:
+          uuid: "0229a48a-5061-4558-815c-1d868f237117"
+          name: "Debut Album"
+        cover: "http://localhost:9912/storage/songs/covers/example.jpg"
+        lyrics: "Sample lyrics here."
+        is_explicit: false
+        views: 12345
+        file: "http://localhost:9912/storage/uploads/songs/converted/example.flac"
+        duration: 180000
+        created_at: "2025-06-15T08:00:00.000000Z"
+        updated_at: "2025-06-15T08:00:00.000000Z"
+
+    Playlist:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: The playlist"s unique identifier.
+        creator:
+          $ref: "#/components/schemas/BasicClient"
+          description: The creator of the playlist.
+        cover:
+          type: string
+          format: url
+          nullable: true
+          description: URL to the playlist cover image.
+        name:
+          type: string
+          description: The name of the playlist.
+        total_duration:
+          type: integer
+          description: Total duration of songs in milliseconds.
+        is_public:
+          type: boolean
+          description: Indicates if the playlist is publicly visible.
+        songs:
+          type: array
+          items:
+            $ref: "#/components/schemas/PlaylistSong"
+          description: List of songs in the playlist, including pivot details.
+        collaborators:
+          type: array
+          items:
+            $ref: "#/components/schemas/BasicClient"
+          description: List of clients collaborating on this playlist.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the playlist was created.
+      example:
+        uuid: "2db3b39f-3a33-4486-bea8-dac40e0ed3c4"
+        creator:
+          uuid: "6d75b583-9fd0-4382-ba0c-54f85a0d8c8e"
+          username: "alyssuuu"
+        cover: "http://localhost:9912/storage/uploads/covers/playlist_cover.jpg"
+        name: "My Awesome Playlist"
+        total_duration: 360000
+        is_public: true
+        songs:
+          - song:
+              uuid: "dea8869f-add5-488c-a4f6-ce4e29e698c4"
+              name: "Example Song Title"
+              duration: 180000
+            added_by:
+              uuid: "6d75b583-9fd0-4382-ba0c-54f85a0d8c8e"
+              username: "alyssuuu"
+            order: 1
+            added_at: "2025-06-15T08:30:00.000000Z"
+        collaborators: []
+        created_at: "2025-06-15T00:39:40.000000Z"
+
+    PlaylistSong:
+      type: object
+      description: Represents a song"s entry in a playlist, including pivot data like order and who added it.
+      properties:
+        song:
+          $ref: "#/components/schemas/Song"
+          description: The full song object details.
+        added_by:
+          $ref: "#/components/schemas/BasicClient"
+          description: The client who added this song to the playlist.
+        order:
+          type: integer
+          description: The sequential order of the song within the playlist.
+        added_at:
+          type: string
+          format: date-time
+          description: Timestamp when the song was added to the playlist.
+      example:
+        song:
+          uuid: "dea8869f-add5-488c-a4f6-ce4e29e698c4"
+          name: "Example Song Title"
+          duration: 180000
+        added_by:
+          uuid: "6d75b583-9fd0-4382-ba0c-54f85a0d8c8e"
+          username: "alyssuuu"
+        order: 1
+        added_at: "2025-06-15T08:30:00.000000Z"
+
+  responses:
+    UnauthorizedError:
+      description: Authentication required or invalid token.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthenticated.
+    ForbiddenError:
+      description: User does not have permission to perform this action.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: This action is unauthorized.
+    ValidationError:
+      description: Validation error for request payload.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The given data was invalid.
+              errors:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+                example:
+                  name: ["The name field is required."]
+                  email: ["The email must be a valid email address."]

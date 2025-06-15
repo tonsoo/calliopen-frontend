@@ -1,0 +1,14 @@
+.generic-icon-button {
+    @apply p-3 block aspect-square rounded-full;
+
+    .icon {
+        @apply w-7 h-7 block;
+    }
+    
+    &:hover .icon svg {
+        filter: drop-shadow(0 0 10px rgba(255, 223, 117, 0.8));
+        * {
+            @apply fill-orange-weak;
+        }
+    }
+}

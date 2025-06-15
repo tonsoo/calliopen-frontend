@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.has-transitions {
+    @apply transition-all duration-300;
+
+    .has-icon svg * {
+        @apply transition-all duration-300;
+    }
+}
+
+.has-icon.aspect-square *:not(svg):not(svg *) {
+    @apply w-full h-full block;
+}
+
+.has-icon svg {
+    @apply block w-full h-full;
+    transition: filter 0.3s ease;
+}
+
+:root {
+  --color-main: #485696;
+
+  --color-white-pure: #e7e7e7;
+  --color-white-mid: #bfbfbf;
+
+  --color-orange-weak: #f9c784;
+  --color-orange-mid:  #fc7a1e;
+  --color-orange-pure: #f24c00;
+
+  --color-black-pure: #020122;
+  --color-black-100:  #12113d;
+
+  --color-gray: #b5b5b5;
+}

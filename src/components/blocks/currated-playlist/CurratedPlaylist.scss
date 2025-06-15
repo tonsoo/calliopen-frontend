@@ -1,0 +1,19 @@
+.app-currated-playlist {
+    @apply py-10 px-11 rounded-[40px] relative bg-main-light;
+
+    .background {
+        @apply w-full h-full block object-cover;
+    }
+
+    .alt {
+        @apply font-quicksand text-white-pure mb-24 text-sm;
+    }
+
+    .title {
+        @apply font-quicksand text-white-pure font-bold text-4xl mb-2;
+    }
+
+    .text {
+        @apply font-quicksand text-white-pure text-sm max-w-[50%] w-[270px];
+    }
+}

@@ -1,0 +1,10 @@
+.app-scroll-list {
+    @apply flex items-start justify-start overflow-x-scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}

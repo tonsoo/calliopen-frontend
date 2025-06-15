@@ -1,0 +1,16 @@
+services:
+  php:
+    build: ./docker
+    container_name: "calliopen-webapp-{{BRANCH_NAME}}"
+    volumes:
+      - .:/app
+    labels:
+      caddy: "{{DOMAIN}}"
+      caddy.reverse_proxy: "{{upstreams 80}}"
+    networks:
+      - web
+  
+networks:
+  web:
+    name: web
+    external: true

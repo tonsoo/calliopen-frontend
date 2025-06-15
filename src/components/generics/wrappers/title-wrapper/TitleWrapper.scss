@@ -1,0 +1,5 @@
+.app-title-wrapper {
+    > .title {
+        @apply font-quicksand font-bold text-white-pure text-2xl mb-4;
+    }
+}

@@ -1,0 +1,31 @@
+.app-chart {
+    @apply p-5 rounded-[20px] bg-black-100 flex items-center justify-between gap-4;
+
+    .cover {
+        @apply aspect-square w-16 h-16 rounded-[10px] block object-cover;
+    }
+
+    .information {
+        @apply flex-grow;
+
+        .title {
+            @apply font-quicksand font-medium text-white-pure text-lg;
+        }
+
+        .author {
+            @apply font-quicksand text-white-pure text-sm opacity-50 mb-1;
+        }
+
+        .time {
+            @apply font-quicksand text-white-pure text-sm;
+        }
+    }
+
+    .like {
+        @apply flex-shrink-0 w-10 h-10 rounded-full border border-main flex items-center justify-center;
+
+        .icon {
+            @apply w-5 h-5 block;
+        }
+    }
+}

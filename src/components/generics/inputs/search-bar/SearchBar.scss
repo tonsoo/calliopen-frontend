@@ -1,0 +1,12 @@
+.app-search-bar {
+    @apply flex items-center justify-start gap-6 px-8;
+
+    .icon {
+        @apply w-7 h-7 block;
+    }
+
+    .input {
+        @apply border-0 px-5 py-3 bg-transparent text-white-pure font-quicksand font-semibold
+            focus:outline-none;
+    }
+}

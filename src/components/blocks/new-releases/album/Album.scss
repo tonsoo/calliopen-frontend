@@ -1,0 +1,11 @@
+.app-album {
+    @apply flex-shrink-0;
+    
+    .cover {
+        @apply aspect-square w-[153px] rounded-[25px] mb-2;
+    }
+
+    .title {
+        @apply font-quicksand text-base text-white-pure;
+    }
+}

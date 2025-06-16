@@ -1,0 +1,24 @@
+.page-login {
+    @apply flex justify-between h-full;
+
+    .bigger-side {
+        @apply w-[50%] flex flex-col items-center justify-start pt-[10%] pb-10;
+
+        .logo {
+            @apply block w-44 mb-4;
+        }
+
+        .title {
+            @apply text-white-pure font-quicksand font-bold text-4xl text-center mb-9;
+        }
+
+        .text {
+            @apply text-white-pure font-quicksand font-bold text-xl text-center;
+        }
+
+    }
+
+    .smaller-side {
+        @apply grow rounded-[10px];
+    }
+}

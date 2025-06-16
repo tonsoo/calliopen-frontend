@@ -1,0 +1,15 @@
+.app-login-form {
+    @apply bg-white-pure px-[10%] py-12 flex flex-col items-stretch justify-center pb-[10%];
+
+    .title {
+        @apply mb-1 text-black-pure font-quicksand text-2xl font-bold;
+    }
+
+    .short-description {
+        @apply text-black-pure font-quicksand font-medium mb-8;
+    }
+
+    .wrapped-text {
+        @apply font-quicksand font-medium text-base text-black-pure;
+    }
+}

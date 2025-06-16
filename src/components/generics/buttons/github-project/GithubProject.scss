@@ -1,0 +1,11 @@
+.app-github-project {
+    @apply flex items-center justify-center gap-x-3;
+
+    .github-icon {
+        @apply w-5 w-5 block object-contain fill-white-pure;
+    }
+
+    .project {
+        @apply text-white-pure text-sm font-semibold font-quicksand;
+    }
+}

@@ -8,8 +8,17 @@ import RadioIcon from '../../../assets/icons/sidebar/radio.svg';
 import VideosIcon from '../../../assets/icons/sidebar/videos.svg';
 import UserIcon from '../../../assets/icons/sidebar/user.svg';
 import ExitIcon from '../../../assets/icons/sidebar/exit.svg';
+import { removeToken } from "../../../http/token";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
+    const navigate = useNavigate();
+
+    const handleTokenRemoval = () => {
+        removeToken();
+        navigate('/login');
+    };
+
     return (
         <div className="app-sidebar">
             <Logo className="mb-10" />
@@ -23,7 +32,7 @@ export default function Sidebar() {
 
             <RoundedWrapper>
                 <IconButton src={UserIcon} />
-                <IconButton src={ExitIcon} />
+                <IconButton src={ExitIcon} onClick={handleTokenRemoval} />
             </RoundedWrapper>
         </div>
     );

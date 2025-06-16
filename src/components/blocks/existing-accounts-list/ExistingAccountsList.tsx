@@ -11,7 +11,7 @@ export default function ExistingAccountsList({
 } : ExistingAccountsListProps) {
     return (
         <div className={"app-existing-accounts-list " + className}>
-            <ExistingAccount />
+            <ExistingAccount token="5|oKgQXso7fpeNHi3nmb2rZCgrIjWas1zm3zAnygpDb771f154" />
         </div>
     );
 }

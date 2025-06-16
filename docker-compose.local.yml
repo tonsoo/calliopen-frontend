@@ -1,9 +1,0 @@
-services:
-  app:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile
-    ports:
-      - "9922:80"
-    volumes:
-      - .:/app

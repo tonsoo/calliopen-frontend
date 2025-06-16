@@ -1,0 +1,22 @@
+name: Deploy App
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - ...
+
+jobs:
+  call-deploy:
+    uses: tonsoo/deployer/.github/workflows/deploy.react.yml@main
+    with:
+      repo: tonsoo/calliopen-frontend
+      domain: app.calliopen.com.br
+      sub-domain: dev # Your dev branches will be accessible at branch.dev.example.com
+      db-password: ${{ secrets.DB_PASSWORD }}
+      ssh-host: ${{ secrets.SSH_HOST }}
+      ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      ssh-user: ${{ secrets.SSH_USER }}
+      deploy-path: ${{ secrets.DEPLOY_PATH }}
+      add-to-deploys: true # Will create an entry in your deploys lists

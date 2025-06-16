@@ -1,5 +1,5 @@
 services:
-  php:
+  app:
     build: ./docker
     container_name: "calliopen-webapp-{{BRANCH_NAME}}"
     volumes:

@@ -1,0 +1,14 @@
+name: Cleanup Old Apps
+
+on:
+  delete:
+  workflow_dispatch:
+
+jobs:
+  call-deploy:
+    uses: tonsoo/deployer/.github/workflows/cleanup.yml@main
+    with:
+      ssh-host: ${{ secrets.SSH_HOST }}
+      ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      ssh-user: ${{ secrets.SSH_USER }}
+      deploy-path: ${{ secrets.DEPLOY_PATH }}

@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
-    container_name: "{{APP_NAME}}-webapp-{{BRANCH_NAME}}"
+    container_name: "calliopen-webapp-{{BRANCH_NAME}}"
     volumes:
       - .:/app
     labels:

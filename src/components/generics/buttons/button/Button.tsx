@@ -8,13 +8,14 @@ interface ButtonProps extends DefaultProps {
     iconSrc?: string | null;
     children: ReactNode;
     onClick?: () => void;
+    type: "submit" | "reset" | "button" | undefined;
 }
 
 export default function Button({
-    className = "", children: text, iconSrc = null, onClick
+    className = "", children: text, iconSrc = null, onClick, type
 } : ButtonProps) {
     return (
-        <button onClick={onClick} className={"app-button hoverable " + className}>
+        <button type={type} onClick={onClick} className={"app-button hoverable " + className}>
             {text}
             <ReactSVG className="icon has-icon aspect-square" src={iconSrc ?? IconSvg} />
         </button>

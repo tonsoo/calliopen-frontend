@@ -74,13 +74,13 @@ export default function LoginForm({
                     onBlur={passwordBlur} />
             </div>
 
-            <Button className="bg-blue-600 ml-auto mb-12">
+            <Button type="submit" className="bg-blue-600 ml-auto mb-12">
                 <p className="font-quicksand font-bold text-white-pure">Login</p>
             </Button>
 
             {hasMultipleAccounts() && <SpacedBetween className="mb-7 border-b border-solid border-gray pb-6">
                 <p className="wrapped-text">Login to a saved account</p>
-                <TextButton text="Login" onClick={handleLoginSelectClick} className="font-bold text-blue-600" />
+                <TextButton text="Choose Account" onClick={handleLoginSelectClick} className="font-bold text-blue-600" />
             </SpacedBetween>}
             <SpacedBetween>
                 <p className="wrapped-text">Don't have an account?</p>

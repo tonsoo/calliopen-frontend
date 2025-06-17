@@ -26,7 +26,7 @@ export default function ExistingAccount({
 
     return (
         <div className={"app-existing-account hoverable has-transitions " + className}>
-            <button className="button-child" onClick={handleClick}>
+            <button type="button" className="button-child" onClick={handleClick}>
                 <img className="avatar" src={client.avatar!} alt={"Avatar for " + client.name} />
                 <p className="welcome">Welcome back, <b>{client.name}</b></p>
             </button>

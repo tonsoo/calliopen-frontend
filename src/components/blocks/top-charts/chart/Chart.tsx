@@ -16,7 +16,7 @@ export default function Chart({
                 <p className="time">2:34</p>
             </div>
 
-            <button className="like">
+            <button type="button" className="like">
                 <ReactSVG className="icon has-icon aspect-square" src={HeartSvg} />
             </button>
         </div>

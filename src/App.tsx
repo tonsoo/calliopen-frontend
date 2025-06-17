@@ -1,15 +1,18 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Dashboard from './pages/dashboard/Dashboard'
 import "./App.scss";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import AppRoutes from './AppRoutes';
+import { BrowserRouter } from "react-router-dom";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <div className="default-page">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Dashboard />}></Route>
-        </Routes>
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </QueryClientProvider>
     </div>
   )
 }

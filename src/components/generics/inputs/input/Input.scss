@@ -1,0 +1,50 @@
+.app-input {
+    .container {
+        @apply relative;
+
+        &.has-error .input {
+            @apply border-red-600;
+        }
+
+        .input {
+            @apply pl-16 pr-5 py-5 rounded-[6px] bg-gray-light focus:bg-white-pure outline-none border-2 border-solid border-transparent focus:!border-blue-600;
+            @apply text-lg font-quicksand font-medium block w-full;
+        }
+    
+        .centered-icon, .input-title {
+            @apply absolute top-1/2 -translate-y-1/2;
+        }
+    
+        .icon {
+            @apply w-5 h-5 block left-6 fill-gray;
+    
+            svg, path {
+                @apply fill-gray;
+            }
+        }
+    
+        .input-title {
+            @apply left-[65px];
+        }
+    
+        .input:not(:placeholder-shown) {
+            @apply border-green-600 bg-white-pure;
+    
+            & ~ .input-title {
+                @apply top-0 left-5 px-2 py-1 bg-white-pure text-xs rounded-[4px];
+            }
+    
+            & ~ .icon {
+                @apply fill-black-pure;
+        
+                svg, path {
+                    @apply fill-black-pure;
+                }
+            }
+        }
+    }
+
+    .error {
+        @apply mt-1 font-quicksand text-xs text-red-600 font-medium;
+    }
+}

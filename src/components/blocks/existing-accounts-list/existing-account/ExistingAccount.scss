@@ -1,0 +1,16 @@
+.app-existing-account {
+    @apply px-5 py-4 rounded-[4px] border border-solid border-black-pure flex items-center justify-start gap-7;
+    @apply hover:bg-orange-weak;
+
+    .button-child {
+        @apply grow flex items-center justify-start gap-7;
+
+        .avatar {
+            @apply block shrink-0 w-16 h-16 rounded-full overflow-hidden;
+        }
+
+        .welcome {
+            @apply font-medium font-quicksand text-lg grow text-start;
+        }
+    }
+}

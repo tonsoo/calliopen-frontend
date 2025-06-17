@@ -13,7 +13,7 @@ export default {
         main: '#485696',
         'main-light': '#609EAF',
         white: {
-          pure: '#e7e7e7',
+          pure: '#f7f7f7',
           mid: '#bfbfbf',
         },
         orange: {
@@ -25,7 +25,8 @@ export default {
           pure: '#020122',
           '100': '#12113d',
         },
-        gray: '#b5b5b5'
+        gray: '#b5b5b5',
+        'gray-light': '#e7e7e7'
       }
     },
   },

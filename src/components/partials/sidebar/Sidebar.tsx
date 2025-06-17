@@ -10,13 +10,14 @@ import UserIcon from '../../../assets/icons/sidebar/user.svg';
 import ExitIcon from '../../../assets/icons/sidebar/exit.svg';
 import { removeToken } from "../../../http/token";
 import { useNavigate } from "react-router-dom";
+import { routesList } from "../../../AppRoutes";
 
 export default function Sidebar() {
     const navigate = useNavigate();
 
     const handleTokenRemoval = () => {
         removeToken();
-        navigate('/login');
+        navigate(routesList.login);
     };
 
     return (

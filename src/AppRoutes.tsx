@@ -1,11 +1,11 @@
 import Dashboard from "./pages/dashboard/Dashboard";
-import Login from "./pages/login/Login";
 import Loading from "./components/blocks/loading/Loading";
 import { useQuery } from "@tanstack/react-query";
 import applyToken, { getToken } from "./http/token";
 import { ApiError, UserService } from "./api";
 import { useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import Login from "./pages/auth/login/Login";
 
 export default function AppRoutes() {
     const navigate = useNavigate();
@@ -25,8 +25,7 @@ export default function AppRoutes() {
         if (query.isError) {
             const err = query.error as ApiError;
             if (err.status == 401) {
-                console.log('here');
-                navigate("/login", { replace: true });
+                navigate(routesList.login, { replace: true });
             }
         }
     }, [query.isError, query.error, navigate, token]);
@@ -34,15 +33,23 @@ export default function AppRoutes() {
     if (query.isLoading) return <Loading />;
 
     const isLoggedIn = query.data !== undefined && !!token;
-    const isAuthPage = location.pathname === '/login';
+    const isAuthPage = location.pathname === routesList.login;
+    const isRegisterPage = location.pathname === routesList.register;
 
-    if (!token && !isAuthPage) return <Navigate to="/login" replace />;
-    if (isLoggedIn && isAuthPage) return <Navigate to="/" replace />;
+    if (!token && !isAuthPage && !isRegisterPage) return <Navigate to={routesList.login} replace />;
+    if (isLoggedIn && isAuthPage) return <Navigate to={routesList.dashboard} replace />;
 
     return (
         <Routes>
-            <Route path="/" element={<Dashboard />}></Route>
-            <Route path="/login" element={<Login />}></Route>
+            <Route path={routesList.dashboard} element={<Dashboard />}></Route>
+            <Route path={routesList.login} element={<Login />}></Route>
+            <Route path={routesList.register} element={<Login />}></Route>
         </Routes>
     );
 }
+
+export const routesList = {
+    login: '/auth/login',
+    register: '/auth/register',
+    dashboard: '/',
+};

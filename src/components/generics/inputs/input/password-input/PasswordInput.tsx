@@ -31,6 +31,7 @@ export default function PasswordInput({
             <button onClick={handleClick} className="centered-icon toggle-button hoverable">
                 <ReactSVG className="toggle-view-icon has-icon aspect-square" src={show ? ClosedEyeSvg : EyeSvg} />
             </button>
+            {children}
         </Input>
     );
 }

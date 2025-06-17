@@ -29,7 +29,6 @@ export default async function login({
 
     if(!token) return;
 
-    console.log("applying", token);
     applyToken(token);
     const user = !savedUser
         ? await getUser({})

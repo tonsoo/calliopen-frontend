@@ -9,7 +9,6 @@ export function getAllTokens() : TokenMap {
     const data = localStorage.getItem(allTokensKey);
     const json: unknown = data ? JSON.parse(data) : {};
     if (typeof json !== 'object' || json === null) {
-        console.log("here");
         return {};
     }
     

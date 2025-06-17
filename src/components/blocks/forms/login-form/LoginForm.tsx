@@ -37,7 +37,6 @@ export default function LoginForm({
 
     const onSubmit = async (data: any) => {
         try {
-            console.log(data);
             await login({
                 login: data.login,
                 password: data.password,
@@ -45,9 +44,8 @@ export default function LoginForm({
             
             navigate(routesList.dashboard);
         } catch (e) {
-            console.log("Registration failed", e);
             if (e instanceof ApiError) {
-                console.log(e.status, e.body, e.message);
+                console.error("Failed to login", e.status, e.body, e.message);
             }
         }
     };

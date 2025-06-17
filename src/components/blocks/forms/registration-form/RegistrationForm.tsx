@@ -41,9 +41,8 @@ export default function RegistrationForm() {
             
             navigate(routesList.dashboard);
         } catch (e) {
-            console.log("Registration failed", e);
             if (e instanceof ApiError) {
-                console.log(e.status, e.body, e.message);
+                console.error("Failed to register", e.status, e.body, e.message);
             }
         }
     };

@@ -22,8 +22,6 @@ export default function ExistingAccount({
 
     const handleRemoveToken = () => removeToken(token);
 
-    console.log(client.avatar, client);
-
     return (
         <div className={"app-existing-account hoverable has-transitions " + className}>
             <button type="button" className="button-child" onClick={handleClick}>

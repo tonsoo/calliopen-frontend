@@ -23,7 +23,7 @@ export default function LoginWithAccountForm({
             <ExistingAccountsList className="mb-8" />
             <SpacedBetween className="mb-7 border-b border-solid border-gray pb-6">
                 <p className="wrapped-text">Login to a different account</p>
-                <Button onClick={handleLoginClick} className="bg-blue-600">
+                <Button type="button" onClick={handleLoginClick} className="bg-blue-600">
                     <p className="font-quicksand font-bold text-white-pure">Login</p>
                 </Button>
             </SpacedBetween>

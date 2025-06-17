@@ -1,4 +1,3 @@
-import ExistingAccountsList from "../../components/blocks/existing-accounts-list/ExistingAccountsList"
 import './Login.scss';
 import LogoSvg from '../../assets/identity/logo.svg';
 import { ReactSVG } from "react-svg";

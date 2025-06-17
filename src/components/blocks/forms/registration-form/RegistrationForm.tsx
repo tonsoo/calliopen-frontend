@@ -83,8 +83,8 @@ export default function RegistrationForm() {
                     onBlur={passwordBlur} />
                 </div>
 
-            <Button className="bg-blue-600 ml-auto mb-14">
-                <p className="font-quicksand font-bold text-white-pure">Next</p>
+            <Button type="button" className="bg-blue-600 ml-auto mb-14">
+                <p className="font-quicksand font-bold text-white-pure">Register</p>
             </Button>
 
             <SpacedBetween className="mb-9 border-b border-solid border-gray pb-6">

@@ -9,6 +9,7 @@ export function getAllTokens() : TokenMap {
     const data = localStorage.getItem(allTokensKey);
     const json: unknown = data ? JSON.parse(data) : {};
     if (typeof json !== 'object' || json === null) {
+        console.log("here");
         return {};
     }
     
@@ -40,7 +41,7 @@ export function removeToken(token?: string) : void {
         setAllTokens(tokens);
     }
 
-    applyToken();
+    applyToken(token);
 }
 
 export function setToken(token:string, client: Client) : void {
@@ -52,11 +53,10 @@ export function setToken(token:string, client: Client) : void {
         setAllTokens(tokens);
     }
     
-    applyToken();
+    applyToken(token);
 }
 
-export default function applyToken() : void {
-    const token = getToken();
+export default function applyToken(token?:string | null) : void {
     if (token) {
         OpenAPI.HEADERS = {
             Authorization: `Bearer ${token}`,

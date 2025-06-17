@@ -1,5 +1,5 @@
 import { AuthenticationService, type Client } from "../api";
-import { getAllTokens, setToken } from "./token";
+import applyToken, { getAllTokens, setToken } from "./token";
 import getUser from "./user";
 
 interface LoginParams {
@@ -29,10 +29,11 @@ export default async function login({
 
     if(!token) return;
 
+    console.log("applying", token);
+    applyToken(token);
     const user = !savedUser
         ? await getUser({})
         : savedUser;
-    console.log(token, user);
     setToken(token, user);
 }
 

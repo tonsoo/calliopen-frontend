@@ -10,8 +10,8 @@ import Login from "./pages/auth/login/Login";
 export default function AppRoutes() {
     const navigate = useNavigate();
 
-    applyToken();
     const token = getToken();
+    applyToken(token);
     
     const query = useQuery({
         queryKey: ['load-user'],

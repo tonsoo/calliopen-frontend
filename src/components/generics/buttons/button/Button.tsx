@@ -7,13 +7,14 @@ import './Button.scss';
 interface ButtonProps extends DefaultProps {
     iconSrc?: string | null;
     children: ReactNode;
+    onClick?: () => void;
 }
 
 export default function Button({
-    className = "", children: text, iconSrc = null
+    className = "", children: text, iconSrc = null, onClick
 } : ButtonProps) {
     return (
-        <button className={"app-button hoverable " + className}>
+        <button onClick={onClick} className={"app-button hoverable " + className}>
             {text}
             <ReactSVG className="icon has-icon aspect-square" src={iconSrc ?? IconSvg} />
         </button>

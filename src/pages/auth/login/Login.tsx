@@ -2,15 +2,18 @@ import './Login.scss';
 import LogoSvg from '../../../assets/identity/logo.svg';
 import { ReactSVG } from "react-svg";
 import GithubProject from "../../../components/generics/buttons/github-project/GithubProject";
-import LoginForm from "../../../components/blocks/forms/login-form/LoginForm";
+import LoginWithAccountForm from "../../../components/blocks/forms/login-with-account-form/LoginWithAccountForm";
 import type { ReactNode } from 'react';
 import { routesList } from '../../../AppRoutes';
 import RegistrationForm from '../../../components/blocks/forms/registration-form/RegistrationForm';
+import LoginForm from '../../../components/blocks/forms/login-form/LoginForm';
 
 export default function Login() {
     let form : ReactNode = <LoginForm />;
     if (location.pathname === routesList.register) {
         form = <RegistrationForm />
+    } else if (location.pathname === routesList.loginToAccount) {
+        form = <LoginWithAccountForm />
     }
     
     return (

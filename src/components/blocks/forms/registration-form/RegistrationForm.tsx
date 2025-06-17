@@ -10,9 +10,9 @@ import PasswordSvg from "../../../../assets/icons/generics/padlock.svg";
 import UserSearchSvg from "../../../../assets/icons/generics/user-search.svg";
 import PasswordInput from "../../../generics/inputs/input/password-input/PasswordInput";
 import Button from "../../../generics/buttons/button/Button";
-import { useRef } from "react";
 import { useForm } from "react-hook-form";
-import { ApiError, AuthenticationService } from "../../../../api";
+import { ApiError } from "../../../../api";
+import { registerUser } from "../../../../http/auth";
 
 export default function RegistrationForm() {
     const navigate = useNavigate();
@@ -32,12 +32,13 @@ export default function RegistrationForm() {
 
     const onSubmit = async (data: any) => {
         try {
-            await AuthenticationService.authRegister({
+            await registerUser({
                 name: data.name,
                 email: data.email,
                 password: data.password,
-                username: data.username
+                username: data.username,
             });
+            
             navigate(routesList.dashboard);
         } catch (e) {
             console.log("Registration failed", e);

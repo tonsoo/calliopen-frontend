@@ -726,12 +726,12 @@ components:
     LoginRequest:
       type: object
       required:
-        - email_or_username
+        - login
         - password
       properties:
-        email_or_username:
+        login:
           type: string
-          example: user@example.com
+          example: user@example.com or username
         password:
           type: string
           format: password

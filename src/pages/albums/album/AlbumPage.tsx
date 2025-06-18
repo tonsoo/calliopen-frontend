@@ -47,7 +47,7 @@ export default function AlbumPage() {
             <div className="default-page page-albums-album">
                 <SidebarWrapper>
                     <SearchBar className="mb-9" />
-                    <ScrollableContent>
+                    <ScrollableContent className="has-current-track">
                         <AlbumCover className="mb-14" album={album} />
 
                         <div className="app-songs-table flex flex-col items-stretch justify-start gap-4">

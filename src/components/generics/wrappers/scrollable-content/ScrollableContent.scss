@@ -1,3 +1,7 @@
+.app-current-track-wrapper.playing .app-scrollable-content.has-current-track {
+    @apply pb-48;
+}
+
 .app-scrollable-content {
     @apply w-full h-full block overflow-hidden;
 

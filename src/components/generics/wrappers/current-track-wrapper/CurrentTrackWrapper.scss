@@ -1,13 +1,17 @@
 .app-current-track-wrapper {
+    &.playing .current-track {
+        @apply bottom-0 top-auto;
+    }
+
     .current-track {
-        @apply fixed left-0 bottom-0 w-full pt-7 pb-4 bg-white-pure/10 z-20 border-t border-solid border-white-pure/40;
+        @apply fixed left-0 top-full w-full pt-7 pb-4 bg-white-pure/10 z-20 border-t border-solid border-white-pure/40;
         @apply items-center justify-center gap-10 px-[101px] grid grid-cols-9;
 
         .track-information-container {
             @apply flex items-start justify-start gap-4 col-start-1 col-end-3;
 
             .cover {
-                @apply w-14 h-14 rounded-[14px] overflow-hidden block shrink-0;
+                @apply w-16 h-16 rounded-[14px] overflow-hidden block shrink-0 bg-black-pure;
             }
             
             .track-information {
@@ -22,7 +26,7 @@
         }
 
         .controls-container {
-            @apply flex flex-col items-stretch justify-start gap-5 grow col-start-3 col-end-8;
+            @apply flex flex-col items-stretch justify-start gap-3 grow col-start-3 col-end-8;
 
             .controls {
                 @apply flex items-center justify-center gap-12;

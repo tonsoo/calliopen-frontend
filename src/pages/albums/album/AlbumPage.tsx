@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import Loading from "../../../components/blocks/loading/Loading";
 import TableViewChart from "../../../components/generics/charts/table-view-chart/TableViewChart";
 import AlbumCover from "../../../components/generics/covers/album-cover/AlbumCover";
+import CurrentTrackerWrapper from "../../../components/generics/wrappers/current-track-wrapper/CurrentTrackWrapper";
 
 export default function AlbumPage() {
     const navigate = useNavigate();
@@ -41,15 +42,17 @@ export default function AlbumPage() {
     const album = albumQuery.data!;
 
     return (
-        <div className="page-albums-album">
-            <SidebarWrapper>
-                <SearchBar className="mb-9" />
-                <AlbumCover className="mb-14" album={album} />
+        <CurrentTrackerWrapper>
+            <div className="page-albums-album">
+                <SidebarWrapper>
+                    <SearchBar className="mb-9" />
+                    <AlbumCover className="mb-14" album={album} />
 
-                <div className="app-songs-table flex flex-col items-stretch justify-start gap-4">
-                    {album.songs?.map((song) => <TableViewChart key={song.uuid} song={song} />)}
-                </div>
-            </SidebarWrapper>
-        </div>
+                    <div className="app-songs-table flex flex-col items-stretch justify-start gap-4">
+                        {album.songs?.map((song) => <TableViewChart key={song.uuid} song={song} />)}
+                    </div>
+                </SidebarWrapper>
+            </div>
+        </CurrentTrackerWrapper>
     );
 }

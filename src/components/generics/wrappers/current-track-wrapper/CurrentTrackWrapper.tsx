@@ -1,7 +1,8 @@
-import type { ReactNode } from "react";
+import { useCallback, type ReactNode } from "react";
 import type DefaultProps from "../../../../traits/DefaultProps";
 import IconButton from "../../buttons/icon-button/IconButton";
 import PlaySvg from '../../../../assets/icons/generics/play.svg';
+import PauseSvg from '../../../../assets/icons/controls/pause.svg';
 import PreviousSvg from '../../../../assets/icons/controls/previous.svg';
 import NextSvg from '../../../../assets/icons/controls/next.svg';
 import RepeatOnceSvg from '../../../../assets/icons/controls/repeat-once.svg';
@@ -11,6 +12,7 @@ import './CurrentTrackWrapper.scss';
 import ControlButton from "../../buttons/control-button/ControllButton";
 import DraggableProgressBar from "../../bars/draggable-progress-bar/DraggableProgressBar";
 import './CurrentTrackWrapper.scss';
+import { useAudio } from "../../../../providers/AudioProvider";
 
 interface CurrentTrackerWrapperProps extends DefaultProps {
     children?: ReactNode
@@ -18,35 +20,73 @@ interface CurrentTrackerWrapperProps extends DefaultProps {
 
 export default function CurrentTrackerWrapper({
     className = "", children
-} : CurrentTrackerWrapperProps) {
+}: CurrentTrackerWrapperProps) {
+    const {
+        isPlaying,
+        progress,
+        activateLoop,
+        deactivateLoop,
+        inLoop,
+        seek,
+        volume,
+        setVolume,
+        toggle,
+        nextTrack,
+        prevTrack,
+        currentSongIndex,
+        songs,
+    } = useAudio();
+
+    const handleSeek = useCallback((newProgress: number) => {
+        seek(newProgress);
+    }, [seek]);
+
+    const handleVolumeChange = useCallback((newProgress: number) => {
+        setVolume(newProgress);
+    }, [setVolume]);
+
+    const handleVolumeDragEnd = useCallback((newProgress: number) => {
+        setVolume(newProgress);
+    }, [setVolume]);
+
+    const currentSong = currentSongIndex !== -1 ? songs?.[currentSongIndex] : null;
+
     return (
-        <div className={"app-current-track-wrapper " + className}>
+        <div className={["app-current-track-wrapper has-transitions", className, currentSong ? "playing" : ""].join(" ")}>
             <div className="current-track">
                 <div className="track-information-container">
-                    <img className="cover" src="" alt="" />
-
+                    {currentSong?.cover
+                        ? <img className="cover" src={currentSong?.cover} alt="" />
+                        : <div className="cover"></div>}
                     <div className="track-information">
-                        <p className="title">Seasons in</p>
-                        <p className="author">James</p>
+                        <p className="title">{currentSong?.name || "No song playing"}</p>
+                        {currentSong?.album?.creator?.name && <p className="author">{currentSong?.album?.creator?.name}</p>}
                     </div>
                 </div>
 
                 <div className="controls-container">
                     <div className="controls">
                         <ControlButton src={ShuffleSvg} />
-                        <ControlButton src={PreviousSvg} />
-                        <IconButton src={PlaySvg} />
-                        <ControlButton src={NextSvg} />
-                        <ControlButton src={RepeatOnceSvg} />
+                        <ControlButton src={PreviousSvg} onClick={prevTrack} />
+                        <IconButton src={isPlaying ? PauseSvg : PlaySvg} onClick={toggle} />
+                        <ControlButton src={NextSvg} onClick={nextTrack} />
+                        <ControlButton onClick={inLoop ? deactivateLoop : activateLoop} src={RepeatOnceSvg} />
                     </div>
 
-                    <DraggableProgressBar initialPercentage={100} />
+                    <DraggableProgressBar
+                        initialPercentage={progress}
+                        onDragEnd={handleSeek}
+                    />
                 </div>
 
                 <div className="volume">
                     <ControlButton src={VolumeSvg} />
                     <div className="volume-bar">
-                        <DraggableProgressBar initialPercentage={20} />
+                        <DraggableProgressBar
+                            initialPercentage={volume * 100}
+                            onChange={handleVolumeChange}
+                            onDragEnd={handleVolumeDragEnd}
+                        />
                     </div>
                 </div>
             </div>

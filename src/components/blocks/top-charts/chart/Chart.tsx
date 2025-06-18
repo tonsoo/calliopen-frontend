@@ -3,8 +3,8 @@ import type DefaultProps from "../../../../traits/DefaultProps";
 import HeartSvg from "../../../../assets/icons/actions/empty-heart.svg";
 import './Chart.scss';
 import type { Song } from "../../../../api";
-import { routesList } from "../../../../AppRoutes";
 import formatDuration from "../../../../helpers/time";
+import { useAudio } from "../../../../providers/AudioProvider";
 
 interface ChartProps extends DefaultProps {
     song: Song;
@@ -13,8 +13,11 @@ interface ChartProps extends DefaultProps {
 export default function Chart({
     className = "", song,
 } : ChartProps) {
+    const { playAsUniqueTrack } = useAudio();
+    const handleClick = () => playAsUniqueTrack(song);
+    
     return (
-        <a href={routesList.song.link(song.uuid!)} className={"app-chart " + className}>
+        <div onClick={handleClick} className={"app-chart hoverable " + className}>
             <img className="cover" src={song.cover!} alt={song.album! + song.name!} />
 
             <div className="information">
@@ -26,6 +29,6 @@ export default function Chart({
             <button type="button" className="like">
                 <ReactSVG className="icon has-icon aspect-square" src={HeartSvg} />
             </button>
-        </a>
+        </div>
     );
 }

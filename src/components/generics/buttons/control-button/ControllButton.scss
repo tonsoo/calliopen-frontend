@@ -1,3 +1,5 @@
 .app-control-button {
-    @apply w-9 h-9 block aspect-square p-2;
+    .icon {
+        @apply w-9 h-9 block aspect-square p-2;
+    }
 }

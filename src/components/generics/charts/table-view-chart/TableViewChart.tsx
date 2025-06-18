@@ -5,6 +5,7 @@ import IconButton from "../../buttons/icon-button/IconButton";
 import './TableViewChart.scss';
 import EmptyHeartSvg from '../../../../assets/icons/actions/empty-heart.svg';
 import MenuSvg from '../../../../assets/icons/generics/menu.svg';
+import { useAudio } from "../../../../providers/AudioProvider";
 
 interface TableViewChartProps extends DefaultProps {
     song: Song;
@@ -12,9 +13,12 @@ interface TableViewChartProps extends DefaultProps {
 
 export default function TableViewChart({
     song, className = ""
-} : TableViewChartProps) {
+}: TableViewChartProps) {
+    const { playAsUniqueTrack } = useAudio();
+    const handleClick = () => playAsUniqueTrack(song);
+
     return (
-        <div className={"app-table-view-chart " + className}>
+        <div onClick={handleClick} className={"app-table-view-chart hoverable " + className}>
             <div className="close-info grow max-w-[50%]">
                 <img className="cover" src={song.cover!} alt={song.name} />
 

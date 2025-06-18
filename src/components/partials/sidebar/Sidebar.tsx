@@ -25,7 +25,7 @@ export default function Sidebar() {
             <Logo className="mb-10" />
             
             <RoundedWrapper className="mb-5">
-                <IconButton src={HomeIcon} />
+                <IconButton src={HomeIcon} onClick={() => navigate(routesList.dashboard)} />
                 <IconButton src={LibraryIcon} />
                 <IconButton src={RadioIcon} />
                 <IconButton src={VideosIcon} />

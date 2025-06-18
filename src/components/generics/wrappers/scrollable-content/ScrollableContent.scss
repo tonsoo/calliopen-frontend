@@ -1,6 +1,8 @@
 .app-scrollable-content {
     @apply w-full h-full block overflow-hidden;
 
+    transition: scrollbar-color 0.3s ease-in-out;
+
     &.horizontal, &.both {
         @apply overflow-x-scroll;
     }
@@ -19,7 +21,7 @@
         }
 
         &::-webkit-scrollbar {
-            @apply h-[12px] w-[12px];
+            @apply h-[7px] w-[7px];
         }
     }
 
@@ -34,14 +36,7 @@
     }
 
     &::-webkit-scrollbar-thumb {
-        @apply bg-main rounded-[10px] border-2 border-solid border-transparent bg-clip-padding;
-
-        &:hover {
-            @apply bg-black-100;
-        }
-        &:active {
-            @apply bg-black-100;
-        }
+        @apply bg-main rounded-[10px] bg-clip-padding;
     }
 
     &::-webkit-scrollbar-button {

@@ -9,6 +9,7 @@ import Loading from "../../../components/blocks/loading/Loading";
 import TableViewChart from "../../../components/generics/charts/table-view-chart/TableViewChart";
 import AlbumCover from "../../../components/generics/covers/album-cover/AlbumCover";
 import CurrentTrackerWrapper from "../../../components/generics/wrappers/current-track-wrapper/CurrentTrackWrapper";
+import ScrollableContent from "../../../components/generics/wrappers/scrollable-content/ScrollableContent";
 
 export default function AlbumPage() {
     const navigate = useNavigate();
@@ -43,14 +44,16 @@ export default function AlbumPage() {
 
     return (
         <CurrentTrackerWrapper>
-            <div className="page-albums-album">
+            <div className="default-page page-albums-album">
                 <SidebarWrapper>
                     <SearchBar className="mb-9" />
-                    <AlbumCover className="mb-14" album={album} />
+                    <ScrollableContent>
+                        <AlbumCover className="mb-14" album={album} />
 
-                    <div className="app-songs-table flex flex-col items-stretch justify-start gap-4">
-                        {album.songs?.map((song) => <TableViewChart key={song.uuid} song={song} />)}
-                    </div>
+                        <div className="app-songs-table flex flex-col items-stretch justify-start gap-4">
+                            {album.songs?.map((song) => <TableViewChart key={song.uuid} song={song} />)}
+                        </div>
+                    </ScrollableContent>
                 </SidebarWrapper>
             </div>
         </CurrentTrackerWrapper>

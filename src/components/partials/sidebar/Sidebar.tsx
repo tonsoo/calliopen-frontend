@@ -11,6 +11,7 @@ import ExitIcon from '../../../assets/icons/sidebar/exit.svg';
 import { removeToken } from "../../../http/token";
 import { useNavigate } from "react-router-dom";
 import { routesList } from "../../../AppRoutes";
+import ScrollableContent from "../../generics/wrappers/scrollable-content/ScrollableContent";
 
 export default function Sidebar() {
     const navigate = useNavigate();
@@ -24,17 +25,19 @@ export default function Sidebar() {
         <div className="app-sidebar">
             <Logo className="mb-10" />
             
-            <RoundedWrapper className="mb-5">
-                <IconButton src={HomeIcon} onClick={() => navigate(routesList.dashboard)} />
-                <IconButton src={LibraryIcon} />
-                <IconButton src={RadioIcon} />
-                <IconButton src={VideosIcon} />
-            </RoundedWrapper>
+            <ScrollableContent scrollBarVisible={false}>
+                <RoundedWrapper className="mb-5">
+                    <IconButton src={HomeIcon} onClick={() => navigate(routesList.dashboard)} />
+                    <IconButton src={LibraryIcon} />
+                    <IconButton src={RadioIcon} />
+                    <IconButton src={VideosIcon} />
+                </RoundedWrapper>
 
-            <RoundedWrapper>
-                <IconButton src={UserIcon} />
-                <IconButton src={ExitIcon} onClick={handleTokenRemoval} />
-            </RoundedWrapper>
+                <RoundedWrapper>
+                    <IconButton src={UserIcon} />
+                    <IconButton src={ExitIcon} onClick={handleTokenRemoval} />
+                </RoundedWrapper>
+            </ScrollableContent>
         </div>
     );
 }

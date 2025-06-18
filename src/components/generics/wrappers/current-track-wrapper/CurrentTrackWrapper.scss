@@ -1,4 +1,6 @@
 .app-current-track-wrapper {
+    @apply h-full;
+    
     &.playing .current-track {
         @apply bottom-0 top-auto;
     }

@@ -1,3 +1,7 @@
 .app-sidebar-wrapper {
-    @apply flex items-start justify-between gap-x-6;
+    @apply flex items-start justify-between gap-x-6 h-full;
+
+    > .sidebar-wrapper-content {
+        @apply flex-grow flex flex-col items-stretch justify-start h-full;
+    }
 }

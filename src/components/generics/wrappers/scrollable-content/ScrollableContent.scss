@@ -1,0 +1,54 @@
+.app-scrollable-content {
+    @apply w-full h-full block overflow-hidden;
+
+    &.horizontal, &.both {
+        @apply overflow-x-scroll;
+    }
+
+    &.vertical, &.both {
+        @apply overflow-y-scroll;
+    }
+
+    &.has-scrollbar {
+        &.horizontal, &.both {
+            @apply pb-3;
+        }
+
+        &.vertical, &.both {
+            @apply pr-3;
+        }
+
+        &::-webkit-scrollbar {
+            @apply h-[12px] w-[12px];
+        }
+    }
+
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+        @apply h-0 w-0 bg-transparent;
+    }
+
+    &::-webkit-scrollbar-track {
+        @apply bg-transparent rounded-[10px];
+    }
+
+    &::-webkit-scrollbar-thumb {
+        @apply bg-main rounded-[10px] border-2 border-solid border-transparent bg-clip-padding;
+
+        &:hover {
+            @apply bg-black-100;
+        }
+        &:active {
+            @apply bg-black-100;
+        }
+    }
+
+    &::-webkit-scrollbar-button {
+        @apply hidden w-0 h-0;
+    }
+
+    &::-webkit-scrollbar-corner {
+        @apply bg-transparent;
+    }
+}

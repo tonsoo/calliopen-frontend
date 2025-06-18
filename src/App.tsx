@@ -8,7 +8,7 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="default-page">
+    <div className="default-app-page">
       <QueryClientProvider client={queryClient}>
         <AudioProvider>
           <BrowserRouter>

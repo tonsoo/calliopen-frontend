@@ -13,7 +13,7 @@ export default function SidebarWrapper({
     return (
         <div className={"app-sidebar-wrapper " + className}>
             <Sidebar />
-            <div className="flex-grow">
+            <div className="sidebar-wrapper-content">
                 {children}
             </div>
         </div>

@@ -8,6 +8,17 @@
     @apply select-none;
 }
 
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.default-page {
+    height: 100%;
+}
+
 .has-transitions {
     @apply transition-all duration-300;
 

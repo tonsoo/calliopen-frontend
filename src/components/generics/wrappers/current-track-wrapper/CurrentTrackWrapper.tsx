@@ -1,4 +1,4 @@
-import { useCallback, type ReactNode } from "react";
+import { useCallback, useState, type ReactNode } from "react";
 import type DefaultProps from "../../../../traits/DefaultProps";
 import IconButton from "../../buttons/icon-button/IconButton";
 import PlaySvg from '../../../../assets/icons/generics/play.svg';
@@ -8,6 +8,7 @@ import NextSvg from '../../../../assets/icons/controls/next.svg';
 import RepeatOnceSvg from '../../../../assets/icons/controls/repeat-once.svg';
 import ShuffleSvg from '../../../../assets/icons/controls/shuffle.svg';
 import VolumeSvg from '../../../../assets/icons/controls/volume.svg';
+import VolumeOffSvg from '../../../../assets/icons/controls/volume-off.svg';
 import './CurrentTrackWrapper.scss';
 import ControlButton from "../../buttons/control-button/ControllButton";
 import DraggableProgressBar from "../../bars/draggable-progress-bar/DraggableProgressBar";
@@ -36,16 +37,30 @@ export default function CurrentTrackerWrapper({
         currentSongIndex,
         songs,
     } = useAudio();
+    const [oldVolume, setOldVolume] = useState(volume);
 
     const handleSeek = useCallback((newProgress: number) => {
         seek(newProgress);
     }, [seek]);
 
+    const setNewOldVolume = (value: number) => {
+        if (value >= 1) {
+            setOldVolume(value);
+        }
+    };
+
+    const handleVolumeClick = useCallback(() => {
+        setNewOldVolume(volume);
+        setVolume(volume == 0 ? oldVolume : 0);
+    }, [oldVolume, volume]);
+
     const handleVolumeChange = useCallback((newProgress: number) => {
+        setNewOldVolume(newProgress);
         setVolume(newProgress);
     }, [setVolume]);
 
     const handleVolumeDragEnd = useCallback((newProgress: number) => {
+        setNewOldVolume(newProgress);
         setVolume(newProgress);
     }, [setVolume]);
 
@@ -80,7 +95,7 @@ export default function CurrentTrackerWrapper({
                 </div>
 
                 <div className="volume">
-                    <ControlButton src={VolumeSvg} />
+                    <ControlButton onClick={handleVolumeClick} src={volume == 0 ? VolumeOffSvg : VolumeSvg} />
                     <div className="volume-bar">
                         <DraggableProgressBar
                             initialPercentage={volume * 100}

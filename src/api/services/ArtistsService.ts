@@ -60,6 +60,27 @@ export class ArtistsService {
         });
     }
     /**
+     * Get allt songs by a specific artist
+     * @param authorUuid UUID of the artist
+     * @returns Song List of songs in the album
+     * @throws ApiError
+     */
+    public static getArtistSongs(
+        authorUuid: string,
+    ): CancelablePromise<Array<Song>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/artists/{authorUuid}/songs',
+            path: {
+                'authorUuid': authorUuid,
+            },
+            errors: {
+                401: `Authentication required or invalid token.`,
+                404: `Artist not found`,
+            },
+        });
+    }
+    /**
      * Get songs by a specific artist within an album
      * @param authorUuid UUID of the artist
      * @param albumUuid UUID of the album

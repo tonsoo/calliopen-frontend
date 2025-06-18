@@ -576,6 +576,36 @@ paths:
         404:
           description: Artist not found
 
+  /artists/{authorUuid}/songs:
+    get:
+      summary: Get allt songs by a specific artist
+      operationId: getArtistSongs
+      tags:
+        - Artists
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: authorUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the artist
+      responses:
+        200:
+          description: List of songs in the album
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Song"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        404:
+          description: Artist not found
+
   /artists/{authorUuid}/songs/{albumUuid}:
     get:
       summary: Get songs by a specific artist within an album
@@ -713,7 +743,106 @@ paths:
                     example: Not author
         404:
           description: Artist or Song not found
+  
+  /albums:
+    get:
+      summary: Get all albums within 1 month
+      operationId: getAlbums
+      tags:
+        - Albums
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: List of albums
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Album"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        404:
+          description: Artist or Album not found
 
+  /songs:
+    get:
+      summary: Get songs within 1 month
+      operationId: getSongs
+      tags:
+        - Songs
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: List of songs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Song"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /songs/{songUuid}:
+    get:
+      summary: Get specific song
+      operationId: getSong
+      tags:
+        - Songs
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: songUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the song
+      responses:
+        200:
+          description: Song information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Song"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        404:
+          description: Artist or Album not found
+
+  /songs/{songUuid}/favorite:
+    post:
+      summary: Add song to user's favorites
+      operationId: favoriteSong
+      tags:
+        - Songs
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: songUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the song
+      responses:
+        200:
+          description: Song information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Song"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        404:
+          description: Song not found
+        409:
+          description: Song is already in favorites
 
 components:
   securitySchemes:

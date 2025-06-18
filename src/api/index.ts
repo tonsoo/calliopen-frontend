@@ -20,7 +20,9 @@ export type { PublishSongRequest } from './models/PublishSongRequest';
 export type { RegisterRequest } from './models/RegisterRequest';
 export type { Song } from './models/Song';
 
+export { AlbumsService } from './services/AlbumsService';
 export { ArtistsService } from './services/ArtistsService';
 export { AuthenticationService } from './services/AuthenticationService';
 export { PlaylistsService } from './services/PlaylistsService';
+export { SongsService } from './services/SongsService';
 export { UserService } from './services/UserService';

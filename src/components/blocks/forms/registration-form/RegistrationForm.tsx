@@ -83,7 +83,7 @@ export default function RegistrationForm() {
                     onBlur={passwordBlur} />
                 </div>
 
-            <Button type="button" className="bg-blue-600 ml-auto mb-14">
+            <Button type="submit" className="bg-blue-600 ml-auto mb-14">
                 <p className="font-quicksand font-bold text-white-pure">Register</p>
             </Button>
 

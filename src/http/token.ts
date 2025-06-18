@@ -31,7 +31,7 @@ export function getToken() : string | null {
     return localStorage.getItem(tokenKey);
 }
 
-export function removeToken(token?: string) : void {
+export function removeToken(token?: string | null) : void {
     localStorage.removeItem(tokenKey);
 
     if (token) {

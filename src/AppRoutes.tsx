@@ -1,7 +1,7 @@
 import Dashboard from "./pages/dashboard/Dashboard";
 import Loading from "./components/blocks/loading/Loading";
 import { useQuery } from "@tanstack/react-query";
-import applyToken, { getToken, hasMultipleAccounts, setToken } from "./http/token";
+import applyToken, { getToken, hasMultipleAccounts, removeToken, setToken } from "./http/token";
 import { ApiError, UserService } from "./api";
 import { useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
@@ -27,6 +27,7 @@ export default function AppRoutes() {
         if (query.isError) {
             const err = query.error as ApiError;
             if (err.status == 401) {
+                removeToken(token ?? null);
                 navigate(routesList.login, { replace: true });
             }
             return;
@@ -59,4 +60,6 @@ export const routesList = {
     loginToAccount: '/auth/login/select',
     register: '/auth/register',
     dashboard: '/',
+    album: (uuid:string) => `/albums/${uuid}`,
+    song: (uuid:string) => `/songs/${uuid}`,
 };

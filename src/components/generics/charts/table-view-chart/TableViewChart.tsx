@@ -14,7 +14,7 @@ export default function TableViewChart({
     song, className = ""
 } : TableViewChartProps) {
     return (
-        <div className="app-table-view-chart">
+        <div className={"app-table-view-chart " + className}>
             <div className="close-info grow max-w-[50%]">
                 <img className="cover" src={song.cover!} alt={song.name} />
 

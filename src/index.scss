@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    @apply select-none;
+}
+
 .has-transitions {
     @apply transition-all duration-300;
 

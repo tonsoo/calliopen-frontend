@@ -1,22 +1,22 @@
 .default-page {
-    @apply px-5 py-6 bg-black-pure h-screen overflow-y-scroll overflow-x-scroll;
+    @apply px-5 py-6 bg-black-pure h-screen overflow-hidden;
 
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-black-100) var(--color-main);
+    // scrollbar-width: thin;
+    // scrollbar-color: var(--color-black-100) var(--color-main);
 
-    &::-webkit-scrollbar {
-        @apply aspect-square w-2;
-    }
+    // &::-webkit-scrollbar {
+    //     @apply aspect-square w-2;
+    // }
 
-    &::-webkit-scrollbar-track {
-        @apply bg-black-pure;
-    }
+    // &::-webkit-scrollbar-track {
+    //     @apply bg-black-pure;
+    // }
 
-    &::-webkit-scrollbar-thumb {
-        @apply bg-black-100 rounded-[10px] border-2 border-solid border-main;
-    }
+    // &::-webkit-scrollbar-thumb {
+    //     @apply bg-black-100 rounded-[10px] border-2 border-solid border-main;
+    // }
 
-    &::-webkit-scrollbar-thumb:hover {
-        @apply bg-main;
-    }
+    // &::-webkit-scrollbar-thumb:hover {
+    //     @apply bg-main;
+    // }
 }

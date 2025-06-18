@@ -32,7 +32,7 @@ export default function TopCharts() {
     return (
         <TitleWrapper className="app-top-charts" title="Top charts">
             <div className="flex flex-col items-stretch justify-start gap-3">
-                {songsQuery.data?.map((song) => <Chart song={song} />)}
+                {songsQuery.data?.map((song) => <Chart key={song.uuid} song={song} />)}
             </div>
         </TitleWrapper>
     );

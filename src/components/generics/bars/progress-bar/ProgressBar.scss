@@ -1,0 +1,19 @@
+.app-progress-bar {
+    @apply h-1 relative bg-black-pure/45;
+
+    .completion-container {
+        @apply overflow-hidden w-full h-full absolute left-0 top-0;
+    }
+
+    .completion {
+        @apply absolute h-full bg-orange-weak rounded-full;
+    }
+
+    .thumb-container {
+        @apply absolute top-1/2 -translate-y-1/2 -translate-x-1/2 p-[1px] border border-solid border-white-pure rounded-full;
+    }
+
+    .thumb {
+        @apply w-2 h-2 rounded-full bg-orange-weak;
+    }
+}

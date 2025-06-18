@@ -11,13 +11,22 @@ import { request as __request } from '../core/request';
 export class ArtistsService {
     /**
      * Get all artists
+     * @param page The page number to retrieve.
+     * @param limit The number of results per page.
      * @returns Author List of artists
      * @throws ApiError
      */
-    public static getAllArtists(): CancelablePromise<Array<Author>> {
+    public static getAllArtists(
+        page: number = 1,
+        limit: number = 15,
+    ): CancelablePromise<Array<Author>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/artists',
+            query: {
+                'page': page,
+                'limit': limit,
+            },
             errors: {
                 401: `Authentication required or invalid token.`,
             },
@@ -62,11 +71,15 @@ export class ArtistsService {
     /**
      * Get allt songs by a specific artist
      * @param authorUuid UUID of the artist
+     * @param page The page number to retrieve.
+     * @param limit The number of results per page.
      * @returns Song List of songs in the album
      * @throws ApiError
      */
     public static getArtistSongs(
         authorUuid: string,
+        page: number = 1,
+        limit: number = 15,
     ): CancelablePromise<Array<Song>> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -74,34 +87,13 @@ export class ArtistsService {
             path: {
                 'authorUuid': authorUuid,
             },
+            query: {
+                'page': page,
+                'limit': limit,
+            },
             errors: {
                 401: `Authentication required or invalid token.`,
                 404: `Artist not found`,
-            },
-        });
-    }
-    /**
-     * Get songs by a specific artist within an album
-     * @param authorUuid UUID of the artist
-     * @param albumUuid UUID of the album
-     * @returns Song List of songs in the album
-     * @throws ApiError
-     */
-    public static getArtistAlbumSongs(
-        authorUuid: string,
-        albumUuid: string,
-    ): CancelablePromise<Array<Song>> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/artists/{authorUuid}/songs/{albumUuid}',
-            path: {
-                'authorUuid': authorUuid,
-                'albumUuid': albumUuid,
-            },
-            errors: {
-                400: `Arguments mismatch`,
-                401: `Authentication required or invalid token.`,
-                404: `Artist or Album not found`,
             },
         });
     }

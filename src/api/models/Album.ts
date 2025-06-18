@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Author } from './Author';
+import type { Song } from './Song';
 export type Album = {
     /**
      * The album"s unique identifier.
@@ -20,5 +21,9 @@ export type Album = {
      * The artist who created this album.
      */
     creator?: Author;
+    /**
+     * Songs in the album
+     */
+    songs?: Array<Song> | null;
 };
 

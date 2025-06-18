@@ -1,0 +1,11 @@
+.app-transparent-rounded-button {
+    @apply px-4 py-3 rounded-full flex items-center justify-center w-fit bg-white-pure/10 gap-3;
+
+    .image {
+        @apply w-4 h-4 block;
+    }
+
+    .button-text {
+        @apply font-quicksand text-base text-white-pure;
+    }
+}

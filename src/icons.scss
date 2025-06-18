@@ -1,0 +1,30 @@
+// FILL
+
+.golden-icon {
+    svg, path {
+        @apply fill-orange-weak;
+    }
+}
+
+.red-icon {
+    svg, path {
+        @apply fill-red-600;
+    }
+}
+
+
+
+
+// STROKES
+
+.golden-stroke {
+    svg, path {
+        @apply stroke-orange-weak;
+    }
+}
+
+.red-stroke {
+    svg, path {
+        @apply stroke-red-600;
+    }
+}

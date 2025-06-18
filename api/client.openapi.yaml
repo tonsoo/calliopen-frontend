@@ -153,6 +153,8 @@ paths:
       security:
         - BearerAuth: []
       parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
         - name: clientUuid
           in: path
           required: true
@@ -266,6 +268,8 @@ paths:
       security:
         - BearerAuth: []
       parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
         - name: clientUuid
           in: path
           required: true
@@ -505,6 +509,9 @@ paths:
     get:
       summary: Get all artists
       operationId: getAllArtists
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
       tags:
         - Artists
       security:
@@ -585,6 +592,8 @@ paths:
       security:
         - BearerAuth: []
       parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
         - name: authorUuid
           in: path
           required: true
@@ -605,53 +614,6 @@ paths:
           $ref: "#/components/responses/UnauthorizedError"
         404:
           description: Artist not found
-
-  /artists/{authorUuid}/songs/{albumUuid}:
-    get:
-      summary: Get songs by a specific artist within an album
-      operationId: getArtistAlbumSongs
-      tags:
-        - Artists
-      security:
-        - BearerAuth: []
-      parameters:
-        - name: authorUuid
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: UUID of the artist
-        - name: albumUuid
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: UUID of the album
-      responses:
-        200:
-          description: List of songs in the album
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Song"
-        400:
-          description: Arguments mismatch
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Arguments mismatch
-        401:
-          $ref: "#/components/responses/UnauthorizedError"
-        404:
-          description: Artist or Album not found
 
   /artists/{authorUuid}/songs/publish:
     post:
@@ -748,6 +710,9 @@ paths:
     get:
       summary: Get all albums within 1 month
       operationId: getAlbums
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
       tags:
         - Albums
       security:
@@ -766,10 +731,73 @@ paths:
         404:
           description: Artist or Album not found
 
+  /albums/{albumUuid}:
+    get:
+      summary: Get album
+      operationId: getAlbum
+      tags:
+        - Albums
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: albumUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the album
+      responses:
+        200:
+          description: Album information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Album"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        404:
+          description: Album not found
+
+  /albums/{albumUuid}/songs:
+    get:
+      summary: Get songs in an album
+      operationId: getAlbumSongs
+      tags:
+        - Albums
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+        - name: albumUuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the album
+      responses:
+        200:
+          description: List of songs in the album
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Song"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        404:
+          description: Album not found
+
   /songs:
     get:
       summary: Get songs within 1 month
       operationId: getSongs
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
       tags:
         - Songs
       security:
@@ -1094,6 +1122,12 @@ components:
         creator:
           $ref: "#/components/schemas/Author"
           description: The artist who created this album.
+        songs:
+          type: array
+          nullable: true
+          description: Songs in the album
+          items:
+            $ref: "#/components/schemas/Song"
       example:
         uuid: "0229a48a-5061-4558-815c-1d868f237117"
         name: "Debut Album"
@@ -1101,6 +1135,27 @@ components:
         creator:
           uuid: "33fba4a6-7667-406b-8765-78e4891df8ab"
           name: "My Favorite Artist"
+          client:
+            uuid: "6d75b583-9fd0-4382-ba0c-54f85a0d8c8e"
+            username: "alyssuuu"
+            avatar: "http://localhost:9912/storage/avatars/default.jpg"
+            is_artist: true
+          albums: []
+          links: []
+        songs:
+          - uuid: "dea8869f-add5-488c-a4f6-ce4e29e698c4"
+            name: "Example Song Title"
+            album:
+              uuid: "0229a48a-5061-4558-815c-1d868f237117"
+              name: "Debut Album"
+            cover: "http://localhost:9912/storage/songs/covers/example.jpg"
+            lyrics: "Sample lyrics here."
+            is_explicit: false
+            views: 12345
+            file: "http://localhost:9912/storage/uploads/songs/converted/example.flac"
+            duration: 180000
+            created_at: "2025-06-15T08:00:00.000000Z"
+            updated_at: "2025-06-15T08:00:00.000000Z"
 
     Song:
       type: object
@@ -1248,6 +1303,25 @@ components:
         order: 1
         added_at: "2025-06-15T08:30:00.000000Z"
 
+  parameters:
+    PageParam:
+      in: query
+      name: page
+      schema:
+        type: integer
+        default: 1
+      description: The page number to retrieve.
+
+    LimitParam:
+      in: query
+      name: limit
+      schema:
+        type: integer
+        default: 15
+        minimum: 1
+        maximum: 100
+      description: The number of results per page.
+      
   responses:
     UnauthorizedError:
       description: Authentication required or invalid token.

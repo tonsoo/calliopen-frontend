@@ -2,11 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './icons.scss';
+
 .has-transitions {
     @apply transition-all duration-300;
 
-    .has-icon svg * {
-        @apply transition-all duration-300;
+    .has-icon svg {
+        &, * {
+            @apply transition-all duration-300;
+        }
     }
 }
 

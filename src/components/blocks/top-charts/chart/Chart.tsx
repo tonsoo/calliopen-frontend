@@ -14,7 +14,7 @@ export default function Chart({
     className = "", song,
 } : ChartProps) {
     return (
-        <a href={routesList.song(song.uuid!)} className={"app-chart " + className}>
+        <a href={routesList.song.link(song.uuid!)} className={"app-chart " + className}>
             <img className="cover" src={song.cover!} alt={song.album! + song.name!} />
 
             <div className="information">

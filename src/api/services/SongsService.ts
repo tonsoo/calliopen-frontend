@@ -9,13 +9,22 @@ import { request as __request } from '../core/request';
 export class SongsService {
     /**
      * Get songs within 1 month
+     * @param page The page number to retrieve.
+     * @param limit The number of results per page.
      * @returns Song List of songs
      * @throws ApiError
      */
-    public static getSongs(): CancelablePromise<Array<Song>> {
+    public static getSongs(
+        page: number = 1,
+        limit: number = 15,
+    ): CancelablePromise<Array<Song>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/songs',
+            query: {
+                'page': page,
+                'limit': limit,
+            },
             errors: {
                 401: `Authentication required or invalid token.`,
             },

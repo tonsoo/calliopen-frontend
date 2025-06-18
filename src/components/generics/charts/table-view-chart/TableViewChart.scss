@@ -1,0 +1,15 @@
+.app-table-view-chart {
+    @apply flex items-center justify-between gap-x-9 bg-white-pure/10 py-3 px-4 rounded-[15px];
+    
+    .close-info {
+        @apply flex items-center justify-start gap-5;
+
+        .cover {
+            @apply block w-10 h-10 rounded-[9px];
+        }
+    }
+
+    .text {
+        @apply text-white-pure font-quicksand font-medium text-base text-center;
+    }
+}

@@ -6,6 +6,7 @@ import { ApiError, UserService } from "./api";
 import { useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/auth/login/Login";
+import AlbumPage from "./pages/albums/album/AlbumPage";
 
 export default function AppRoutes() {
     const navigate = useNavigate();
@@ -51,6 +52,8 @@ export default function AppRoutes() {
             <Route path={routesList.login} element={<Login />}></Route>
             <Route path={routesList.loginToAccount} element={<Login />}></Route>
             <Route path={routesList.register} element={<Login />}></Route>
+            <Route path={routesList.album.path} element={<AlbumPage />}></Route>
+            <Route path={routesList.song.path} element={<Login />}></Route>
         </Routes>
     );
 }
@@ -60,6 +63,12 @@ export const routesList = {
     loginToAccount: '/auth/login/select',
     register: '/auth/register',
     dashboard: '/',
-    album: (uuid:string) => `/albums/${uuid}`,
-    song: (uuid:string) => `/songs/${uuid}`,
+    album: {
+        path: '/albums/:uuid',
+        link: (uuid:string) => routesList.album.path.replace(':uuid', uuid),
+    },
+    song: {
+        path: '/songs/:uuid',
+        link: (uuid:string) => routesList.song.path.replace(':uuid', uuid),
+    },
 };

@@ -17,7 +17,7 @@ export default function NewReleases({
         queryKey: ['load-albums'],
         staleTime: 1000 * 60 * 10,
         retry: false,
-        queryFn: AlbumsService.getAlbums
+        queryFn: () => AlbumsService.getAlbums(1, 20)
     });
 
     useEffect(() => {

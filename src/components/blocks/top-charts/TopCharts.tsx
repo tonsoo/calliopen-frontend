@@ -11,7 +11,7 @@ export default function TopCharts() {
         queryKey: ['load-songs'],
         staleTime: 1000 * 60 * 10,
         retry: false,
-        queryFn: SongsService.getSongs
+        queryFn: () => SongsService.getSongs(1, 3)
     });
 
     useEffect(() => {
@@ -26,6 +26,7 @@ export default function TopCharts() {
 
     if (songsQuery.isLoading) return <Loading />
     if (songsQuery.isError) return "Error loading!";
+
     if (songsQuery.data?.length == 0) return <></>;
     
     return (

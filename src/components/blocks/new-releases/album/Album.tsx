@@ -11,7 +11,7 @@ export default function Album({
     className = "", album
 } : AlbumProps) {
     return (
-        <a href={routesList.album(album.uuid!)} className={"app-album " + className}>
+        <a href={routesList.album.link(album.uuid!)} className={"app-album " + className}>
             <img className="cover" src={album.cover} alt={album.name + " " + album.creator} />
             <p className="title">{album.name}</p>
         </a>

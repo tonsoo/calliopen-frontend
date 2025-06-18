@@ -12,17 +12,25 @@ export class PlaylistsService {
     /**
      * Get all playlists for a specific user
      * @param clientUuid UUID of the client
+     * @param page The page number to retrieve.
+     * @param limit The number of results per page.
      * @returns Playlist List of playlists
      * @throws ApiError
      */
     public static getUserPlaylists(
         clientUuid: string,
+        page: number = 1,
+        limit: number = 15,
     ): CancelablePromise<Array<Playlist>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/user/{clientUuid}/playlists',
             path: {
                 'clientUuid': clientUuid,
+            },
+            query: {
+                'page': page,
+                'limit': limit,
             },
             errors: {
                 401: `Authentication required or invalid token.`,
@@ -86,12 +94,16 @@ export class PlaylistsService {
      * Get songs for a specific playlist
      * @param clientUuid UUID of the client
      * @param playlistUuid UUID of the playlist
+     * @param page The page number to retrieve.
+     * @param limit The number of results per page.
      * @returns PlaylistSong List of songs in the playlist (including pivot data)
      * @throws ApiError
      */
     public static getPlaylistSongs(
         clientUuid: string,
         playlistUuid: string,
+        page: number = 1,
+        limit: number = 15,
     ): CancelablePromise<Array<PlaylistSong>> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -99,6 +111,10 @@ export class PlaylistsService {
             path: {
                 'clientUuid': clientUuid,
                 'playlistUuid': playlistUuid,
+            },
+            query: {
+                'page': page,
+                'limit': limit,
             },
             errors: {
                 401: `Authentication required or invalid token.`,

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import TitleWrapper from "../../generics/wrappers/title-wrapper/TitleWrapper";
 import Chart from "./chart/Chart";
 import './TopCharts.scss';
-import { ApiError, SongsService } from "../../../api";
+import { SongsService } from "../../../api";
 import { useEffect } from "react";
 import Loading from "../loading/Loading";
 
@@ -18,7 +18,7 @@ export default function TopCharts() {
         if (songsQuery.isLoading || !songsQuery.isFetched) return;
 
         if (songsQuery.isError) {
-            const error = songsQuery.error as ApiError;
+            // const error = songsQuery.error as ApiError;
             // @TODO: handle errors
             return;
         }

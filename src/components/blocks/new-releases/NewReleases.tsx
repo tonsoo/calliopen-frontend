@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import ScrollList from "../../generics/wrappers/scroll-list/ScrollList";
 import TitleWrapper from "../../generics/wrappers/title-wrapper/TitleWrapper";
-import { AlbumsService, ApiError} from "../../../api";
+import { AlbumsService } from "../../../api";
 import { useEffect } from "react";
 import Loading from "../loading/Loading";
 import type DefaultProps from "../../../traits/DefaultProps";
@@ -24,7 +24,7 @@ export default function NewReleases({
         if (albumsQuery.isLoading || !albumsQuery.isFetched) return;
 
         if (albumsQuery.isError) {
-            const error = albumsQuery.error as ApiError;
+            // const error = albumsQuery.error as ApiError;
             // @TODO: handle errors
             return;
         }

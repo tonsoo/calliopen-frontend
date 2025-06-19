@@ -5,7 +5,8 @@ import PlaySvg from '../../../../assets/icons/generics/play.svg';
 import PauseSvg from '../../../../assets/icons/controls/pause.svg';
 import PreviousSvg from '../../../../assets/icons/controls/previous.svg';
 import NextSvg from '../../../../assets/icons/controls/next.svg';
-import RepeatOnceSvg from '../../../../assets/icons/controls/repeat-once.svg';
+import RepeatOffSvg from '../../../../assets/icons/controls/repeat-off.svg';
+import RepeatSvg from '../../../../assets/icons/controls/repeat.svg';
 import ShuffleSvg from '../../../../assets/icons/controls/shuffle.svg';
 import VolumeSvg from '../../../../assets/icons/controls/volume.svg';
 import VolumeDecreasedSvg from '../../../../assets/icons/controls/volume-decreased.svg';
@@ -93,7 +94,7 @@ export default function CurrentTrackerWrapper({
                         <ControlButton src={PreviousSvg} onClick={prevTrack} />
                         <IconButton src={isPlaying ? PauseSvg : PlaySvg} onClick={toggle} />
                         <ControlButton src={NextSvg} onClick={nextTrack} />
-                        <ControlButton onClick={inLoop ? deactivateLoop : activateLoop} src={RepeatOnceSvg} />
+                        <ControlButton onClick={inLoop ? deactivateLoop : activateLoop} src={inLoop ? RepeatSvg : RepeatOffSvg} />
                     </div>
 
                     <DraggableProgressBar

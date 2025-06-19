@@ -7,7 +7,7 @@ interface ScrollListProps extends DefaultProps {
 }
 
 export default function ScrollList({
-    className, children
+    className = "", children
 } : ScrollListProps) {
     return (
         <div className="relative">

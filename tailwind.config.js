@@ -22,6 +22,7 @@ export default {
           pure: '#f24c00',
         },
         black: {
+          real: '#000',
           pure: '#020122',
           '100': '#12113d',
         },

@@ -28,7 +28,7 @@ export default function Sidebar() {
             <ScrollableContent scrollBarVisible={false}>
                 <RoundedWrapper className="mb-5">
                     <IconButton src={HomeIcon} onClick={() => navigate(routesList.dashboard)} />
-                    <IconButton src={LibraryIcon} />
+                    <IconButton src={LibraryIcon} onClick={() => navigate(routesList.library)} />
                     <IconButton src={RadioIcon} />
                     <IconButton src={VideosIcon} />
                 </RoundedWrapper>

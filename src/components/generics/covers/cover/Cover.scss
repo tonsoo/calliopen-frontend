@@ -1,11 +1,11 @@
-.app-album-cover {
+.app-cover {
     @apply flex items-end justify-start gap-x-8;
 
     .image {
-        @apply w-[300px] max-w-[50%] rounded-[35px];
+        @apply w-[300px] max-w-[50%] rounded-[35px] aspect-square object-cover;
     }
 
-    .album-information {
+    .information {
         .title {
             @apply text-white-pure font-quicksand font-bold text-4xl mb-3;
         }

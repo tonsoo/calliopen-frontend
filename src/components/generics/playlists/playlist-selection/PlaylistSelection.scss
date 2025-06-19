@@ -1,0 +1,7 @@
+.app-playlist-selection {
+    @apply rounded-[5px] hover:bg-main px-5 py-2;
+
+    .title {
+        @apply font-quicksand text-white-pure font-medium text-sm;
+    }
+}

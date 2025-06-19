@@ -5,6 +5,14 @@ type TokenMap = Record<string, Client>;
 const tokenKey = 'app-auth-token';
 const allTokensKey = 'app-auth-all-tokens';
 
+export function getUser() : Client | null {
+    const currentToken = getToken();
+    const tokens = getAllTokens();
+    if (!currentToken || !tokens) return null;
+
+    return tokens[currentToken] ?? null;
+}
+
 export function getAllTokens() : TokenMap {
     const data = localStorage.getItem(allTokensKey);
     const json: unknown = data ? JSON.parse(data) : {};

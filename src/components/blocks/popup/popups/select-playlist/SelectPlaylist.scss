@@ -1,0 +1,9 @@
+.app-select-playlist {
+    .select-title {
+        @apply text-white-pure font-quicksand text-xl mb-3 text-center px-5;
+    }
+
+    .playlist-collection {
+        @apply flex flex-col items-stretch justify-start gap-2;
+    }
+}

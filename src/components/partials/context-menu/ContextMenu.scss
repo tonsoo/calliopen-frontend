@@ -1,0 +1,19 @@
+.app-context-menu {
+    @apply bg-black-100 rounded-[8px] p-1 border border-solid border-main min-w-[100px] max-w-[300px] shadow-lg shadow-black-100 text-white-pure font-quicksand text-sm;
+
+    ul {
+        @apply list-none m-0 p-0 flex flex-col gap-1;;
+    }
+
+    .context-menu-item {
+        @apply px-3 py-1 flex items-center justify-start gap-2 hover:bg-main rounded-[4px];
+
+        &.disabled {
+            @apply bg-black-pure cursor-not-allowed;
+        }
+
+        .context-menu-icon {
+            @apply block w-4 h-4 object-contain;
+        }
+    }
+}

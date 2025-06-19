@@ -1,12 +1,14 @@
 import Dashboard from "./pages/dashboard/Dashboard";
 import Loading from "./components/blocks/loading/Loading";
 import { useQuery } from "@tanstack/react-query";
-import applyToken, { getToken, hasMultipleAccounts, removeToken, setToken } from "./http/token";
+import applyToken, { getToken, getUser, hasMultipleAccounts, removeToken, setToken } from "./http/token";
 import { ApiError, UserService } from "./api";
 import { useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/auth/login/Login";
 import AlbumPage from "./pages/albums/album/AlbumPage";
+import MyPlaylists from "./pages/playlists/my-playlists/MyPlaylists";
+import PlaylistPage from "./pages/playlists/playlist-page/PlaylistPage";
 
 export default function AppRoutes() {
     const navigate = useNavigate();
@@ -54,6 +56,8 @@ export default function AppRoutes() {
             <Route path={routesList.register} element={<Login />}></Route>
             <Route path={routesList.album.path} element={<AlbumPage />}></Route>
             <Route path={routesList.song.path} element={<Login />}></Route>
+            <Route path={routesList.library} element={<MyPlaylists />}></Route>
+            <Route path={routesList.playlist.path} element={<PlaylistPage />}></Route>
         </Routes>
     );
 }
@@ -71,4 +75,9 @@ export const routesList = {
         path: '/songs/:uuid',
         link: (uuid:string) => routesList.song.path.replace(':uuid', uuid),
     },
+    playlist: {
+        path: '/playlists/:uuid/:userUuid',
+        link: (uuid:string, userUuid?:string) => routesList.playlist.path.replace(':uuid', uuid).replace(':userUuid', userUuid ?? getUser()?.uuid!),
+    },
+    library: '/library',
 };

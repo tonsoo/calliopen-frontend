@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import TitleWrapper from "../../generics/wrappers/title-wrapper/TitleWrapper";
-import Chart from "./chart/Chart";
+import Chart from "../../generics/charts/chart/Chart";
 import './TopCharts.scss';
 import { SongsService } from "../../../api";
 import { useEffect } from "react";

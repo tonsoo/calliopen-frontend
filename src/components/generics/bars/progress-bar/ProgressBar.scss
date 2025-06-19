@@ -1,5 +1,5 @@
 .app-progress-bar {
-    @apply h-1 relative bg-black-pure/45;
+    @apply h-1.5 relative bg-black-pure/45 rounded-full border-[1px] border-solid border-main/50;
 
     .completion-container {
         @apply overflow-hidden w-full h-full absolute left-0 top-0;

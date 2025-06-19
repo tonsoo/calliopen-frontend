@@ -2,6 +2,7 @@ import type { Playlist } from "../../../../api";
 import type DefaultProps from "../../../../traits/DefaultProps";
 import TransparentRoundedButton from "../../buttons/transparent-rounded-button/TransparentRoundedButton";
 import PlaySvg from '../../../../assets/icons/generics/play.svg';
+import ShuffleSvg from '../../../../assets/icons/controls/shuffle.svg';
 import Cover from "../cover/Cover";
 import { useAudio } from "../../../../providers/AudioProvider";
 
@@ -13,9 +14,10 @@ export default function PlaylistCover({
     playlist, className = ""
 } : PlaylistCoverProps) {
     const { setTracks } = useAudio();
-    const handlePlayAll = () => {
-        setTracks(playlist.songs?.map((s) => s.song!)!);
-    };
+
+    const mappedSongs = playlist.songs?.map((s) => s.song!)!;
+    const handlePlayClicked = () => setTracks(mappedSongs);
+    const handleShuffleClicked = () => setTracks(mappedSongs, true);
 
     const totalDuration = playlist.songs?.map((s) => s.song?.duration).reduce((a, b) => a! + b!);
     return (
@@ -28,10 +30,16 @@ export default function PlaylistCover({
                 totalSongs={playlist.songs?.length}
             >
                 <TransparentRoundedButton
-                    onClick={handlePlayAll}
+                    onClick={handlePlayClicked}
                     src={PlaySvg}
                     className="golden-icon"
                     text="Play all" />
+
+                <TransparentRoundedButton
+                    onClick={handleShuffleClicked}
+                    src={ShuffleSvg}
+                    className="golden-icon"
+                    text="Shuffle all" />
 
                 {/* <TransparentRoundedButton
                     onClick={() => {}}

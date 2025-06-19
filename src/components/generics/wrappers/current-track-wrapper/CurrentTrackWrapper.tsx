@@ -8,6 +8,7 @@ import NextSvg from '../../../../assets/icons/controls/next.svg';
 import RepeatOnceSvg from '../../../../assets/icons/controls/repeat-once.svg';
 import ShuffleSvg from '../../../../assets/icons/controls/shuffle.svg';
 import VolumeSvg from '../../../../assets/icons/controls/volume.svg';
+import VolumeDecreasedSvg from '../../../../assets/icons/controls/volume-decreased.svg';
 import VolumeOffSvg from '../../../../assets/icons/controls/volume-off.svg';
 import './CurrentTrackWrapper.scss';
 import ControlButton from "../../buttons/control-button/ControllButton";
@@ -66,6 +67,13 @@ export default function CurrentTrackerWrapper({
 
     const currentSong = currentSongIndex !== -1 ? songs?.[currentSongIndex] : null;
 
+    let volumeIcon = VolumeSvg;
+    if (volume == 0) {
+        volumeIcon = VolumeOffSvg;
+    } else if (volume < .5) {
+        volumeIcon = VolumeDecreasedSvg;
+    }
+
     return (
         <div className={["app-current-track-wrapper has-transitions", className, currentSong ? "playing" : ""].join(" ")}>
             <div className="current-track">
@@ -95,7 +103,7 @@ export default function CurrentTrackerWrapper({
                 </div>
 
                 <div className="volume">
-                    <ControlButton onClick={handleVolumeClick} src={volume == 0 ? VolumeOffSvg : VolumeSvg} />
+                    <ControlButton onClick={handleVolumeClick} src={volumeIcon} />
                     <div className="volume-bar">
                         <DraggableProgressBar
                             initialPercentage={volume * 100}

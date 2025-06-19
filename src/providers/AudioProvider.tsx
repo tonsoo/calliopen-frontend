@@ -17,7 +17,9 @@ interface AudioContextProps {
     toggle: () => void;
     seek: (percentage: number) => void;
     setVolume: (value: number) => void;
-    setTracks: (songs: Song[]) => void;
+    addTrack: (song: Song) => void;
+    removeTrack: (song: Song) => void;
+    setTracks: (songs: Song[], shuffle?: boolean) => void;
     activateLoop: () => void;
     deactivateLoop: () => void;
     nextTrack: () => void;
@@ -25,6 +27,7 @@ interface AudioContextProps {
 }
 
 const AudioContext = createContext<AudioContextProps | null>(null);
+const localStorageKey = "app.settings.audio-player";
 
 export const useAudio = () => {
     const context = useContext(AudioContext);
@@ -34,50 +37,101 @@ export const useAudio = () => {
 
 export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const audioRef = useRef<HTMLAudioElement>(new Audio());
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [volume, setVolumeState] = useState(1);
-    const [progress, setProgress] = useState(0);
-    const [duration, setDuration] = useState(0);
-    const [currentTime, setCurrentTime] = useState(0);
-    const [songs, setSongs] = useState<Song[]>([]);
-    const [inLoop, setInLoop] = useState(false);
-    const [currentSongIndex, setCurrentSongIndex] = useState(-1);
 
-    const play = useCallback((index: number) => {
-        if (index < 0 || index >= songs.length) return;
-        const audio = audioRef.current;
-        const newSrc = songs[index].file!;
-
-        if (audio.src !== newSrc) {
-            audio.src = newSrc;
-            audio.load();
+    const getInitialState = useCallback(() => {
+        try {
+            const savedState = localStorage.getItem(localStorageKey);
+            if (savedState) {
+                const parsedState = JSON.parse(savedState);
+                return {
+                    songs: parsedState.songs || [],
+                    currentSongIndex: parsedState.currentSongIndex !== undefined ? parsedState.currentSongIndex : -1,
+                    volume: parsedState.volume !== undefined ? parsedState.volume : 1,
+                    inLoop: parsedState.inLoop || false,
+                    currentTime: parsedState.currentTime || 0,
+                    duration: parsedState.duration || 0,
+                    progress: parsedState.progress || 0,
+                };
+            }
+        } catch (e) {
+            console.error("Failed to load audio state from localStorage:", e);
+            localStorage.removeItem(localStorageKey);
         }
+        return { songs: [], currentSongIndex: -1, volume: 1, inLoop: false, currentTime: 0, duration: 0, progress: 0 };
+    }, []);
 
-        audio.play().catch(error => console.error("Error playing audio:", error));
-        setIsPlaying(true);
-        setCurrentSongIndex(index);
+    const initialState = getInitialState();
+
+    const [isMounted, setIsMounted] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [volume, setVolumeState] = useState(initialState.volume);
+    const [progress, setProgress] = useState(initialState.progress);
+    const [duration, setDuration] = useState(initialState.duration);
+    const [currentTime, setCurrentTime] = useState(initialState.currentTime);
+    const [songs, setSongs] = useState<Song[]>(initialState.songs);
+    const [inLoop, setInLoop] = useState(initialState.inLoop);
+    const [currentSongIndex, setCurrentSongIndex] = useState(initialState.currentSongIndex);
+
+    const songsRef = useRef(songs);
+    useEffect(() => {
+        songsRef.current = songs;
     }, [songs]);
 
-    const resume = useCallback(() => {
-        audioRef.current.play().catch(error => console.error("Error resuming audio:", error));
-        setIsPlaying(true);
+    useEffect(() => {
+        audioRef.current.preload = 'auto';
     }, []);
+
+    useEffect(() => {
+        if (!isPlaying) return;
+        play(currentSongIndex);
+    }, [currentSongIndex, songs, isPlaying]);
+
+    const play = useCallback((index: number) => {
+        const audio = audioRef.current;
+        const latestSongs = songsRef.current;
+
+        if (index < 0 || index >= latestSongs.length) {
+            setIsPlaying(false);
+            setCurrentSongIndex(-1);
+            audio.pause();
+            audio.src = "";
+            return;
+        }
+
+        try {
+            const newSrc = latestSongs[index].file!;
+            if (audio.src !== newSrc) {
+                audio.src = newSrc;
+                audio.load();
+                audio.currentTime = 0;
+            }
+
+            audioRef.current.play();
+            setIsPlaying(true);
+        } catch (e) {
+            console.log('Failed to play', e);
+        }
+    }, [setIsPlaying, setCurrentSongIndex]);
+
+    const resume = useCallback(() => {
+        audioRef.current.play().catch(console.error);
+        setIsPlaying(true);
+    }, [setIsPlaying]);
 
     const pause = useCallback(() => {
         audioRef.current.pause();
         setIsPlaying(false);
-    }, []);
+    }, [setIsPlaying]);
 
     const toggle = useCallback(() => {
-        isPlaying ? pause() : resume();
-    }, [isPlaying, pause, resume]);
-
-    const setTracks = useCallback((newSongs: Song[]) => {
-        setSongs(newSongs);
-        if (newSongs.length > 0 && (currentSongIndex === -1 || currentSongIndex >= newSongs.length)) {
+        if (isPlaying) {
+            pause();
+        } else if (currentSongIndex === -1 && songs.length > 0) {
             setCurrentSongIndex(0);
+        } else {
+            resume();
         }
-    }, [currentSongIndex]);
+    }, [isPlaying, pause, resume, currentSongIndex, songs, setCurrentSongIndex]);
 
     const activateLoop = useCallback(() => {
         setInLoop(true);
@@ -90,7 +144,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     const seek = useCallback((percentage: number) => {
         const audio = audioRef.current;
         const newTime = (percentage / 100) * audio.duration;
-        if (!isNaN(newTime) && audio.duration > 0 && Math.abs(audio.currentTime - newTime) > 0.1) {
+        if (!isNaN(newTime) && audio.duration > 0 && Math.abs(audio.currentTime - newTime) > 0.05) {
             audio.currentTime = newTime;
         }
     }, []);
@@ -101,75 +155,153 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
         setVolumeState(newVolume);
     }, []);
 
-    const setTrackIndex = (index: number) => {
-        if (songs.length === 0) return;
+    const navigateToTrack = useCallback((offset: number) => {
+        const latestSongs = songsRef.current;
 
-        if (index < 0 && index >= songs.length && !inLoop) {
+        if (latestSongs.length === 0) {
             setIsPlaying(false);
             setCurrentSongIndex(-1);
             return;
         }
 
-        if (index < 0) index = songs.length - 1;
-        else if (index >= songs.length) index = 0;
+        let targetIndex = currentSongIndex + offset;
 
-        play(index);
-    };
+        if (targetIndex < 0) {
+            if (inLoop) {
+                targetIndex = latestSongs.length - 1;
+            } else {
+                setIsPlaying(false);
+                setCurrentSongIndex(0);
+                return;
+            }
+        } else if (targetIndex >= latestSongs.length) {
+            if (inLoop) {
+                targetIndex = 0;
+            } else {
+                setIsPlaying(false);
+                setCurrentSongIndex(-1);
+                return;
+            }
+        }
+        setCurrentSongIndex(targetIndex);
+    }, [currentSongIndex, inLoop, setCurrentSongIndex, setIsPlaying, setCurrentSongIndex]);
 
     const nextTrack = useCallback(() => {
-        setTrackIndex(currentSongIndex + 1);
-    }, [songs, currentSongIndex, inLoop, play]);
+        navigateToTrack(1);
+    }, [navigateToTrack]);
 
     const prevTrack = useCallback(() => {
-        setTrackIndex(currentSongIndex - 1);
-    }, [songs, currentSongIndex, inLoop, play]);
+        navigateToTrack(-1);
+    }, [navigateToTrack]);
+
+    const addTrack = useCallback((newSong: Song) => {
+        setSongs((prevSongs) => [...prevSongs, newSong]);
+    }, []);
+
+    const removeTrack = useCallback((songToRemove: Song) => {
+        setSongs((prevSongs) => prevSongs.filter((s) => s.uuid !== songToRemove.uuid));
+    }, []);
+
+    const setTracks = useCallback((newSongs: Song[], shuffle: boolean = false) => {
+        let songsToSet = [...newSongs];
+        if (shuffle) {
+            for (let i = songsToSet.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const temp = songsToSet[i];
+                songsToSet[i] = songsToSet[j];
+                songsToSet[j] = temp;
+            }
+        }
+
+        setSongs(songsToSet);
+        if (songsToSet.length > 0) {
+            setIsPlaying(true);
+            setCurrentSongIndex(0);
+        } else {
+            pause();
+            setCurrentSongIndex(-1);
+        }
+    }, [pause, setCurrentSongIndex]);
 
     const handleEnd = useCallback(() => {
         nextTrack();
     }, [nextTrack]);
 
     const playAsUniqueTrack = useCallback((song: Song) => {
-        setTracks([song]);
-        play(0);
-    }, [songs]);
+        setTracks([song], false);
+    }, [setTracks]);
 
     useEffect(() => {
         const audio = audioRef.current;
+        const latestSongs = songsRef.current;
 
         const updateProgress = () => {
-            if (!audio.duration) return;
-
+            if (isNaN(audio.duration) || audio.duration === 0) {
+                setProgress(0);
+                setCurrentTime(0);
+                setDuration(0);
+                return;
+            }
             setDuration(audio.duration);
             setCurrentTime(audio.currentTime);
             setProgress((audio.currentTime / audio.duration) * 100);
         };
 
-        audio.addEventListener("timeupdate", updateProgress);
-        audio.addEventListener("ended", handleEnd);
-        audio.addEventListener("canplaythrough", () => {
-            if (isPlaying && audio.paused) {
-                audio.play().catch(error => console.error("Error playing after canplaythrough:", error));
-            }
-        });
+        const handleEnded = () => nextTrack();
 
-        audio.volume = volume;
+        audio.addEventListener("timeupdate", updateProgress);
+        audio.addEventListener("ended", handleEnded);
+
+        if (currentSongIndex !== -1 && latestSongs.length > 0 && latestSongs[currentSongIndex] && latestSongs[currentSongIndex].file) {
+            const newSrc = latestSongs[currentSongIndex].file!;
+            if (audio.src !== newSrc) {
+                audio.src = newSrc;
+                audio.load();
+                audio.currentTime = 0;
+            }
+        } else if (audio.src) {
+            audio.pause();
+            audio.src = "";
+            setIsPlaying(false);
+            setProgress(0);
+            setCurrentTime(0);
+            setDuration(0);
+        }
+
+        const flattenSong = (songList: Song[]): string => songList.flatMap((s) => s.uuid).join(',');
+        if (!isMounted && currentSongIndex === initialState.currentSongIndex && flattenSong(songs) === flattenSong(initialState.songs)) {
+            if (initialState.currentSongIndex !== -1 && initialState.songs && initialState.songs[initialState.currentSongIndex] && initialState.songs[initialState.currentSongIndex].file) {
+                audio.currentTime = initialState.currentTime;
+            }
+
+            setIsMounted(true);
+        }
 
         return () => {
             audio.removeEventListener("timeupdate", updateProgress);
-            audio.removeEventListener("ended", handleEnd);
-            audio.removeEventListener("canplaythrough", () => { });
+            audio.removeEventListener("ended", handleEnded);
+            audio.removeEventListener("canplaythrough", () => {});
         };
-    }, [handleEnd, isPlaying]);
+    }, [currentSongIndex, songs, handleEnd, volume, initialState, isMounted, setIsMounted]);
 
     useEffect(() => {
-        audioRef.current.volume = volume;
+        if (audioRef.current.volume !== volume) {
+            audioRef.current.volume = volume;
+        }
     }, [volume]);
 
     useEffect(() => {
-        if (currentSongIndex !== -1 && songs.length > 0) {
-            play(currentSongIndex);
-        }
-    }, [currentSongIndex, songs, play]);
+        const stateToSave = {
+            songs: songs,
+            currentSongIndex: currentSongIndex,
+            volume: volume,
+            inLoop: inLoop,
+            currentTime: currentTime,
+            duration: duration,
+            progress: progress,
+        };
+        localStorage.setItem(localStorageKey, JSON.stringify(stateToSave));
+    }, [songs, currentSongIndex, volume, inLoop, currentTime, duration, progress]);
 
     return (
         <AudioContext.Provider
@@ -191,6 +323,8 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
                 setVolume,
                 activateLoop,
                 deactivateLoop,
+                addTrack,
+                removeTrack,
                 setTracks,
                 nextTrack,
                 prevTrack,

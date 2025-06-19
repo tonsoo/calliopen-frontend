@@ -6,6 +6,7 @@ import './TableViewChart.scss';
 import EmptyHeartSvg from '../../../../assets/icons/actions/empty-heart.svg';
 import MenuSvg from '../../../../assets/icons/generics/menu.svg';
 import { useAudio } from "../../../../providers/AudioProvider";
+import SongContextWrapper from "../../wrappers/contexts/song-context-wrapper/SongContextWrapper";
 
 interface TableViewChartProps extends DefaultProps {
     song: Song;
@@ -18,18 +19,20 @@ export default function TableViewChart({
     const handleClick = () => playAsUniqueTrack(song);
 
     return (
-        <div onClick={handleClick} className={"app-table-view-chart hoverable " + className}>
-            <div className="close-info grow max-w-[50%]">
-                <img className="cover" src={song.cover!} alt={song.name} />
+        <SongContextWrapper song={song}>
+            <div onClick={handleClick} className={"app-table-view-chart hoverable " + className}>
+                <div className="close-info grow max-w-[50%]">
+                    <img className="cover" src={song.cover!} alt={song.name} />
 
-                <IconButton src={EmptyHeartSvg} />
+                    <IconButton src={EmptyHeartSvg} />
 
-                <p className="text name grow">{song.name}</p>
+                    <p className="text name grow">{song.name}</p>
+                </div>
+
+                <p className="text duration">{formatDuration(song.duration! / 1000, true)}</p>
+
+                <IconButton fillClass="golden-icon golden-stroke" src={MenuSvg} />
             </div>
-
-            <p className="text duration">{formatDuration(song.duration! / 1000)}</p>
-
-            <IconButton fillClass="golden-icon golden-stroke" src={MenuSvg} />
-        </div>
+        </SongContextWrapper>
     )
 }

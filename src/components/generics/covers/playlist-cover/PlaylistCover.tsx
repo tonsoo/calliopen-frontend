@@ -3,6 +3,7 @@ import type DefaultProps from "../../../../traits/DefaultProps";
 import TransparentRoundedButton from "../../buttons/transparent-rounded-button/TransparentRoundedButton";
 import PlaySvg from '../../../../assets/icons/generics/play.svg';
 import Cover from "../cover/Cover";
+import { useAudio } from "../../../../providers/AudioProvider";
 
 interface PlaylistCoverProps extends DefaultProps {
     playlist: Playlist;
@@ -11,6 +12,11 @@ interface PlaylistCoverProps extends DefaultProps {
 export default function PlaylistCover({
     playlist, className = ""
 } : PlaylistCoverProps) {
+    const { setTracks } = useAudio();
+    const handlePlayAll = () => {
+        setTracks(playlist.songs?.map((s) => s.song!)!);
+    };
+
     const totalDuration = playlist.songs?.map((s) => s.song?.duration).reduce((a, b) => a! + b!);
     return (
         <div className={"app-album-cover " + className}>
@@ -22,7 +28,7 @@ export default function PlaylistCover({
                 totalSongs={playlist.songs?.length}
             >
                 <TransparentRoundedButton
-                    onClick={() => {}}
+                    onClick={handlePlayAll}
                     src={PlaySvg}
                     className="golden-icon"
                     text="Play all" />

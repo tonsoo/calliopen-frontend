@@ -4,7 +4,7 @@ export interface ContextMenuItem {
     id: string;
     label: string;
     onClick: (data?: any) => void;
-    icon?: ReactNode;
+    icon?: string;
     disabled?: boolean;
 }
 
@@ -17,7 +17,7 @@ interface ContextMenuState {
 }
 
 interface ContextMenuContextType {
-    showMenu: (x: number, y: number, items: ContextMenuItem[], data?: any) => void;
+    showMenu: (x: number | null, y: number | null, items: ContextMenuItem[], data?: any) => void;
     hideMenu: () => void;
     menuState: ContextMenuState;
     setMenuRef: (ref: HTMLDivElement | null) => void;
@@ -40,10 +40,11 @@ export const ContextMenuProvider = ({ children }: ContextMenuProviderProps) => {
 
     const isOpeningRef = useRef(false);
 
-    const showContextMenu = useCallback((x: number, y: number, items: ContextMenuItem[], data?: any) => {
-        console.log(">>> showContextMenu CALLED.");
+    const showContextMenu = useCallback((x: number | null, y: number | null, items: ContextMenuItem[], data?: any) => {
+        if (items.length == 0) return;
+
         isOpeningRef.current = true;
-        setContextMenuState({ isOpen: true, x, y, items, data });
+        setContextMenuState({ isOpen: true, x: x ?? contextMenuState.x, y: y ?? contextMenuState.y, items, data });
         setTimeout(() => isOpeningRef.current = false, 100);
     }, []);
 

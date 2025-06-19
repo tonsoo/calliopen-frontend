@@ -12,7 +12,7 @@ interface IconButtonProps extends DefaultProps {
 }
 
 export default function IconButton({
-    src = "", alt = "", onClick, title = "", className, type = "button", fillClass
+    src = "", alt = "", onClick, title = "", className = "", type = "button", fillClass = ""
 } : IconButtonProps) {
     return (
         <button type={type} onClick={onClick} aria-label={alt} title={title} className={"generic-icon-button has-transitions hoverable " + className}>

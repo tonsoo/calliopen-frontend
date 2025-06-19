@@ -8,7 +8,7 @@ interface ApiErrorBlockProps extends DefaultProps {
 }
 
 export default function ApiErrorBlock({
-    map, className, error
+    map, className = "", error
 } : ApiErrorBlockProps) {
     return (
         <div className={"app-api-error-block " + className}>

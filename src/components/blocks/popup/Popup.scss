@@ -1,0 +1,8 @@
+.app-popup {
+    @apply fixed top-0 left-0 w-full h-full bg-black-pure/20 flex justify-center items-center z-50 ease-out;
+
+    .popup-content-wrapper {
+        @apply bg-black-100 border border-solid border-main shadow-sm shadow-main/20 py-3 px-2 rounded-[8px] max-w-[50vw] max-h-[50vh] overflow-hidden relative;
+        @apply ease-out;
+    }
+}

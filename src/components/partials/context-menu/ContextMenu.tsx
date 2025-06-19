@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useContextMenu } from '../../../providers/ContextMenuProvider';
 import './ContextMenu.scss';
+import { ReactSVG } from 'react-svg';
 
 const ContextMenu: React.FC = () => {
     const { menuState: contextMenuState, hideMenu: hideContextMenu, setMenuRef } = useContextMenu();
@@ -63,12 +64,12 @@ const ContextMenu: React.FC = () => {
                 {items.map(item => (
                     <li
                         key={item.id}
-                        className={`context-menu-item ${item.disabled ? 'disabled' : ''}`}
+                        className={`context-menu-item hoverable has-transitions ${item.disabled ? 'disabled' : ''}`}
                         onClick={item.disabled ? undefined : () => handleItemClick(item.onClick)}
                         role="menuitem"
                         aria-disabled={item.disabled}
                     >
-                        {item.icon && <span className="context-menu-icon">{item.icon}</span>}
+                        {item.icon && <ReactSVG src={item.icon} className="context-menu-icon icon has-icon aspect-square" />}
                         {item.label}
                     </li>
                 ))}

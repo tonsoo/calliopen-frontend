@@ -10,7 +10,7 @@ interface PasswordInputProps extends InputProps {
 }
 
 export default function PasswordInput({
-    icon, title, children, className, name, onChange, onBlur, ref, error
+    icon, title, children, className = "", name, onChange, onBlur, ref, error
 } : PasswordInputProps) {
     const [show, showPassword] = useState(false);
 

@@ -1,43 +1,19 @@
 .app-context-menu {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    min-width: 180px;
-    padding: 5px 0;
-    font-family: Arial, sans-serif;
-    color: #333;
+    @apply bg-black-100 rounded-[8px] p-1 border border-solid border-main min-w-[100px] max-w-[300px] shadow-lg shadow-black-100 text-white-pure font-quicksand text-sm;
 
     ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
+        @apply list-none m-0 p-0 flex flex-col gap-1;;
     }
 
     .context-menu-item {
-        padding: 8px 15px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
+        @apply px-3 py-1 flex items-center justify-start gap-2 hover:bg-main rounded-[4px];
 
-    .context-menu-item:hover {
-        background-color: #f0f0f0;
-    }
+        &.disabled {
+            @apply bg-black-pure cursor-not-allowed;
+        }
 
-    .context-menu-item.disabled {
-        color: #bbb;
-        cursor: not-allowed;
-        background-color: #f9f9f9;
-    }
-
-    .context-menu-item.disabled:hover {
-        background-color: #f9f9f9;
-    }
-
-    .context-menu-icon {
-        display: flex;
-        align-items: center;
+        .context-menu-icon {
+            @apply block w-4 h-4 object-contain;
+        }
     }
 }

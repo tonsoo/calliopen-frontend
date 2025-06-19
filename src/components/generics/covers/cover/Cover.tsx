@@ -22,7 +22,7 @@ export default function Cover({
             <div className="information pb-5">
                 <p className="title">{name}</p>
                 {creatorName && <p className="text">{creatorName}</p>}
-                <p className="text">{totalSongs && `${totalSongs} songs `}~ {formatDuration(totalDuration! / 1000)} hrs</p>
+                <p className="text">{totalSongs && `${totalSongs} songs `}~ {formatDuration(totalDuration! / 1000, true)}</p>
                 <div className="mt-10 flex items-stretch justify-start gap-4">
                     {children}
                 </div>

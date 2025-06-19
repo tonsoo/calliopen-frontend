@@ -12,7 +12,7 @@ interface DraggableProgressBarProps extends DefaultProps { // Renamed for clarit
 
 export default function DraggableProgressBar({
     initialPercentage = 0,
-    className,
+    className = "",
     onDragEnd,
     onDragStart,
     onChange // Destructure new prop

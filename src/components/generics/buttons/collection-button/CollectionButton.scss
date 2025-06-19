@@ -1,0 +1,15 @@
+.app-collection-button {
+    @apply px-5 py-3 rounded-full border border-solid border-white-pure/30;
+
+    .button-text {
+        @apply font-quicksand text-white-pure/30;
+    }
+
+    &.selected {
+        @apply bg-orange-weak border-orange-weak;
+
+        .button-text {
+            @apply text-black-pure;
+        }
+    }
+}

@@ -1,0 +1,19 @@
+.app-playlist {
+    @apply relative w-[213px] h-[234px] rounded-[20px] overflow-hidden;
+    
+    .cover, .content {
+        @apply absolute w-full h-full left-0 top-0 object-cover;
+    }
+
+    .content {
+        @apply flex flex-col items-stretch justify-end px-5 py-6 bg-gradient-to-t from-black-real via-black-pure/60 to-transparent;
+    }
+
+    .title {
+        @apply font-quicksand font-bold text-xl text-white-pure;
+    }
+
+    .author {
+        @apply font-quicksand font-bold text-base text-white-pure/50;
+    }
+}

@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/auth/login/Login";
 import AlbumPage from "./pages/albums/album/AlbumPage";
+import MyPlaylists from "./pages/playlists/my-playlists/MyPlaylists";
 
 export default function AppRoutes() {
     const navigate = useNavigate();
@@ -54,6 +55,7 @@ export default function AppRoutes() {
             <Route path={routesList.register} element={<Login />}></Route>
             <Route path={routesList.album.path} element={<AlbumPage />}></Route>
             <Route path={routesList.song.path} element={<Login />}></Route>
+            <Route path={routesList.library} element={<MyPlaylists />}></Route>
         </Routes>
     );
 }
@@ -71,4 +73,9 @@ export const routesList = {
         path: '/songs/:uuid',
         link: (uuid:string) => routesList.song.path.replace(':uuid', uuid),
     },
+    playlist: {
+        path: '/playlists/:uuid',
+        link: (uuid:string) => routesList.playlist.path.replace(':uuid', uuid),
+    },
+    library: '/library',
 };

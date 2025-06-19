@@ -3,16 +3,16 @@
 }
 
 .app-scrollable-content {
-    @apply w-full h-full block overflow-hidden;
+    @apply block overflow-hidden;
 
     transition: scrollbar-color 0.3s ease-in-out;
 
     &.horizontal, &.both {
-        @apply overflow-x-scroll;
+        @apply w-full overflow-x-scroll;
     }
 
     &.vertical, &.both {
-        @apply overflow-y-scroll;
+        @apply h-full overflow-y-scroll;
     }
 
     &.has-scrollbar {

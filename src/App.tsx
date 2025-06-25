@@ -31,3 +31,14 @@ function App() {
 }
 
 export default App
+
+export const queryKeys = {
+  user: 'user',
+  playlists: 'playlists',
+  playlist: (uuid?:string) => `playlist-${uuid}`,
+  favorites: 'favorites',
+  albums: 'albums',
+  album: (uuid?:string) => `album-${uuid}`,
+  songs: 'songs',
+  song: (uuid?:string) => `song-${uuid}`,
+};

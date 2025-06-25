@@ -6,6 +6,7 @@ import Loading from "../../../loading/Loading";
 import ApiErrorBlock from "../../../api-error-block/ApiErrorBlock";
 import PlaylistSelection from "../../../../generics/playlists/playlist-selection/PlaylistSelection";
 import './SelectPlaylist.scss';
+import { queryKeys } from "../../../../../App";
 
 interface SelectPlaylistProps extends PopupProps {
     userUuid: string;
@@ -16,7 +17,7 @@ export default function SelectPlaylist({
     className = "", onClose, userUuid, onSelect
 } : SelectPlaylistProps) {
     const playlistsQuery = useQuery({
-        queryKey: ['load-playlists'],
+        queryKey: [queryKeys.playlists],
         staleTime: 1000 * 60 * 10,
         retry: false,
         queryFn: () => PlaylistsService.getUserPlaylists(userUuid, -1)

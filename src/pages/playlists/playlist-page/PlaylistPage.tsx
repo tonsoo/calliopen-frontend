@@ -11,6 +11,7 @@ import CurrentTrackerWrapper from "../../../components/generics/wrappers/current
 import ScrollableContent from "../../../components/generics/wrappers/scrollable-content/ScrollableContent";
 import PlaylistCover from "../../../components/generics/covers/playlist-cover/PlaylistCover";
 import ApiErrorBlock from "../../../components/blocks/api-error-block/ApiErrorBlock";
+import { queryKeys } from "../../../App";
 
 export default function PlaylistPage() {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function PlaylistPage() {
     if (!uuid || !userUuid) navigate(routesList.dashboard);
 
     const playlistQuery = useQuery({
-        queryKey: [`load-playlist-${uuid}`],
+        queryKey: [queryKeys.playlists, queryKeys.playlist(uuid)],
         staleTime: 1000 * 60 * 10,
         retry: false,
         queryFn: () => PlaylistsService.getSpecificPlaylist(userUuid!, uuid!)

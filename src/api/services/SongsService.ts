@@ -69,7 +69,21 @@ export class SongsService {
             errors: {
                 401: `Authentication required or invalid token.`,
                 404: `Song not found`,
-                409: `Song is already in favorites`,
+            },
+        });
+    }
+    /**
+     * Get user's favorite songs
+     * @returns Song Songs
+     * @throws ApiError
+     */
+    public static getFavoriteSongs(): CancelablePromise<Array<Song>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/songs/favorites',
+            errors: {
+                401: `Authentication required or invalid token.`,
+                404: `Song not found`,
             },
         });
     }

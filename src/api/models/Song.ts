@@ -41,6 +41,10 @@ export type Song = {
      */
     duration?: number;
     /**
+     * Is the song favoried by the user
+     */
+    is_favorite?: boolean;
+    /**
      * Timestamp when the song was created.
      */
     created_at?: string;

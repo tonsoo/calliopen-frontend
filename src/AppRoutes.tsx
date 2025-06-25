@@ -9,6 +9,7 @@ import Login from "./pages/auth/login/Login";
 import AlbumPage from "./pages/albums/album/AlbumPage";
 import MyPlaylists from "./pages/playlists/my-playlists/MyPlaylists";
 import PlaylistPage from "./pages/playlists/playlist-page/PlaylistPage";
+import { queryKeys } from "./App";
 
 export default function AppRoutes() {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function AppRoutes() {
     applyToken(token);
     
     const query = useQuery({
-        queryKey: ['load-user'],
+        queryKey: [queryKeys.user],
         staleTime: 1000 * 60 * 2,
         retry: false,
         enabled: !!token,

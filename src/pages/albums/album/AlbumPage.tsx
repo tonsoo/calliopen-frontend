@@ -10,6 +10,7 @@ import TableViewChart from "../../../components/generics/charts/table-view-chart
 import AlbumCover from "../../../components/generics/covers/album-cover/AlbumCover";
 import CurrentTrackerWrapper from "../../../components/generics/wrappers/current-track-wrapper/CurrentTrackWrapper";
 import ScrollableContent from "../../../components/generics/wrappers/scrollable-content/ScrollableContent";
+import { queryKeys } from "../../../App";
 
 export default function AlbumPage() {
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function AlbumPage() {
     if (!uuid) navigate(routesList.dashboard);
 
     const albumQuery = useQuery({
-        queryKey: [`load-album-${uuid}`],
+        queryKey: [queryKeys.albums, queryKeys.album(uuid)],
         staleTime: 1000 * 60 * 10,
         retry: false,
         queryFn: () => AlbumsService.getAlbum(uuid!)

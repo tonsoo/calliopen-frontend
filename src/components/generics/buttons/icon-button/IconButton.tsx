@@ -1,13 +1,14 @@
 import { ReactSVG } from 'react-svg';
 import './IconButton.scss';
 import type DefaultProps from '../../../../traits/DefaultProps';
+import type { MouseEventHandler } from 'react';
 
 interface IconButtonProps extends DefaultProps {
   src?: string;
   alt?: string;
   title?: string;
   fillClass?: string;
-  onClick?: () => void;
+  onClick?: MouseEventHandler | undefined;
   type?: "submit" | "reset" | "button" | undefined;
 }
 

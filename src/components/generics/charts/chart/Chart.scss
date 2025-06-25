@@ -21,11 +21,7 @@
         }
     }
 
-    .like {
-        @apply flex-shrink-0 w-10 h-10 rounded-full border border-main flex items-center justify-center;
-
-        .icon {
-            @apply w-5 h-5 block;
-        }
+    .like .icon {
+        @apply w-5 h-5 block;
     }
 }

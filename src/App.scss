@@ -20,3 +20,7 @@
     //     @apply bg-main;
     // }
 }
+
+.app-collection-list {
+    @apply flex items-center justify-start gap-x-3;
+}

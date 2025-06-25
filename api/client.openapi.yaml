@@ -115,6 +115,31 @@ paths:
                 $ref: "#/components/schemas/Client"
         401:
           $ref: "#/components/responses/UnauthorizedError"
+      
+  /user/playlists:
+    get:
+      summary: Get all playlists from current user
+      operationId: getMyUserPlaylists
+      tags:
+        - Playlists
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+      responses:
+        200:
+          description: List of playlists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Playlist"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        404:
+          description: Client not found
 
   /user/{clientUuid}:
     get:
@@ -869,8 +894,28 @@ paths:
           $ref: "#/components/responses/UnauthorizedError"
         404:
           description: Song not found
-        409:
-          description: Song is already in favorites
+
+  /songs/favorites:
+    get:
+      summary: Get user's favorite songs
+      operationId: getFavoriteSongs
+      tags:
+        - Songs
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: Songs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Song"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        404:
+          description: Song not found
 
 components:
   securitySchemes:
@@ -1192,6 +1237,9 @@ components:
         duration:
           type: integer
           description: Duration of the song in milliseconds.
+        is_favorite:
+          type: boolean
+          description: "Is the song favoried by the user"
         created_at:
           type: string
           format: date-time
@@ -1212,6 +1260,7 @@ components:
         views: 12345
         file: "http://localhost:9912/storage/uploads/songs/converted/example.flac"
         duration: 180000
+        is_favorite: false
         created_at: "2025-06-15T08:00:00.000000Z"
         updated_at: "2025-06-15T08:00:00.000000Z"
 

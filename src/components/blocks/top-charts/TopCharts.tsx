@@ -5,10 +5,11 @@ import './TopCharts.scss';
 import { SongsService } from "../../../api";
 import { useEffect } from "react";
 import Loading from "../loading/Loading";
+import { queryKeys } from "../../../App";
 
 export default function TopCharts() {
     const songsQuery = useQuery({
-        queryKey: ['load-songs'],
+        queryKey: [queryKeys.songs],
         staleTime: 1000 * 60 * 10,
         retry: false,
         queryFn: () => SongsService.getSongs(1, 3)

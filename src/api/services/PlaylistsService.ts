@@ -10,6 +10,30 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class PlaylistsService {
     /**
+     * Get all playlists from current user
+     * @param page The page number to retrieve.
+     * @param limit The number of results per page.
+     * @returns Playlist List of playlists
+     * @throws ApiError
+     */
+    public static getMyUserPlaylists(
+        page: number = 1,
+        limit: number = 15,
+    ): CancelablePromise<Array<Playlist>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/user/playlists',
+            query: {
+                'page': page,
+                'limit': limit,
+            },
+            errors: {
+                401: `Authentication required or invalid token.`,
+                404: `Client not found`,
+            },
+        });
+    }
+    /**
      * Get all playlists for a specific user
      * @param clientUuid UUID of the client
      * @param page The page number to retrieve.

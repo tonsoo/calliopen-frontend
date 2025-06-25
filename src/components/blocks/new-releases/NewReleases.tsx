@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import Loading from "../loading/Loading";
 import type DefaultProps from "../../../traits/DefaultProps";
 import Album from "./album/Album";
+import { queryKeys } from "../../../App";
 
 interface NewReleasesProps extends DefaultProps {
 }
@@ -14,7 +15,7 @@ export default function NewReleases({
     className = ""
 } : NewReleasesProps) {
     const albumsQuery = useQuery({
-        queryKey: ['load-albums'],
+        queryKey: [queryKeys.albums],
         staleTime: 1000 * 60 * 10,
         retry: false,
         queryFn: () => AlbumsService.getAlbums(1, 20)

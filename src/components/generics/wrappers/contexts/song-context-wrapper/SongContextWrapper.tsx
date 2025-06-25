@@ -8,6 +8,7 @@ import type { ReactNode } from "react";
 import AddSongSvg from '../../../../../assets/icons/actions/add-song.svg';
 import PlaylistService from "../../../../../http/services/playlist-services";
 import { useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "../../../../../App";
 
 interface SongContextWrapperProps extends DefaultProps {
     children?: ReactNode;
@@ -24,7 +25,7 @@ export default function SongContextWrapper({
 
     const handlePlaylistSelection = async (playlist: Playlist) => {
         await new PlaylistService().addSong(userUuid!, playlist.uuid!, song.uuid!);
-        queryClient.invalidateQueries({ queryKey: ['load-playlists', `load-playlist-${playlist.uuid}`] });
+        queryClient.invalidateQueries({ queryKey: [queryKeys.playlist(playlist.uuid)] });
     };
 
     const handleRightClick = async (event: React.MouseEvent<HTMLDivElement>) => {
@@ -38,17 +39,6 @@ export default function SongContextWrapper({
                 onClick: () => openPopup(SelectPlaylist, { "userUuid": userUuid!, "onSelect": handlePlaylistSelection }),
             }
         ];
-
-        // const playlists = playlistsQuery.data;
-
-        // playlists?.forEach((p) => customItems.push({
-        //     id: `add-song-to-playlist-${p.uuid}`,
-        //     label: `Add to ${p.name}`,
-        //     onClick: async () => {
-        //         await new PlaylistService().addSong(userUuid!, p.uuid!, song.uuid!)
-        //         queryClient.invalidateQueries({ queryKey: ['load-playlists', `load-playlist-${p.uuid}`] });
-        //     }
-        // })) ?? [];
 
         showMenu(event.clientX, event.clientY, customItems);
     };

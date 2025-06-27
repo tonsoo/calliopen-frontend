@@ -2,6 +2,7 @@ import formatDuration from "../../../../helpers/time";
 import type DefaultProps from "../../../../traits/DefaultProps";
 import type { ReactNode } from "react";
 import './Cover.scss';
+import stringToColor from "../../../../helpers/colors";
 
 interface CoverProps extends DefaultProps {
     src: string;
@@ -17,7 +18,8 @@ export default function Cover({
 } : CoverProps) {
     return (
         <div className={"app-cover " + className}>
-            <img className="image" src={src} alt={name} />
+            {src && <img className="image" src={src} alt={name} />}
+            {!src && <div className="image" style={{background: stringToColor(name)}}></div>}
 
             <div className="information pb-5">
                 <p className="title">{name}</p>

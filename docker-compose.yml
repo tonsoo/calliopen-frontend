@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     container_name: "calliopen-webapp-{{BRANCH_NAME}}"
+    restart: unless-stopped
     volumes:
       - .:/app
     labels:

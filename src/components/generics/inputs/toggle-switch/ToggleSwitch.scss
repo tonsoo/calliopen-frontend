@@ -1,0 +1,27 @@
+.app-toggle-switch {
+    @apply flex items-center justify-start gap-3;
+
+    .title {
+        @apply text-white-pure text-lg font-quicksand;
+    }
+    
+    .track {
+        @apply w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300;
+
+        &.active {
+            @apply bg-green-500;
+        }
+
+        &.deactive {
+            @apply bg-gray;
+        }
+
+        .thumb {
+            @apply bg-white-pure w-6 h-6 rounded-full shadow-md transform transition-transform duration-300;
+        }
+
+        &.active .thumb {
+            @apply translate-x-6;
+        }
+    }
+}

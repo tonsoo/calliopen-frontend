@@ -6,12 +6,19 @@ import { useQuery } from "@tanstack/react-query";
 import { ApiError, PlaylistsService } from "../../../../api";
 import Loading from "../../loading/Loading";
 import ApiErrorBlock from "../../api-error-block/ApiErrorBlock";
-import ErrorText from "../../../partials/error-text/ErrorText";
 import PlaylistCard from "../../playlist-card/PlaylistCard";
 import { queryKeys } from "../../../../App";
+import Card from "../../card/Card";
+import { ReactSVG } from "react-svg";
+import AddSongSvg from '../../../../assets/icons/generics/add-song.svg';
+import './PlaylistList.scss';
+import ScrollableContent from "../../../generics/wrappers/scrollable-content/ScrollableContent";
+import { usePopup } from "../../../../providers/PopupProvider";
+import PlaylistCreationForm from "../../forms/playlist-creation-form/PlaylistCreationForm";
 
 export default function PlaylistList() {
     const navigate = useNavigate();
+    const { openPopup } = usePopup();
     
     const user = getUser();
     if (!user) {
@@ -41,10 +48,22 @@ export default function PlaylistList() {
 
     const playlists = playlistsQuery.data;
 
+    const handlePopupCreation = () => {
+        openPopup(PlaylistCreationForm);
+    };
+
     return (
-        <div className="app-playlist-list">
-            {playlists?.length == 0 && <ErrorText text="No playlists found" />}
-            {playlists?.map((p) => <PlaylistCard key={p.uuid} playlist={p} />)}
-        </div>
+        <ScrollableContent className="app-playlist-list">
+            <Card
+                onClick={handlePopupCreation}
+                background={<div className="create-playlist-background"></div>}
+                content={
+                    <div className="create-playlist-content">
+                        <ReactSVG className="icon has-icon aspect-square" src={AddSongSvg} />
+                    </div>
+                }
+                />
+            {playlists?.map((p) => <PlaylistCard key={p.uuid} playlist={p} />)}    
+        </ScrollableContent>
     );
 }

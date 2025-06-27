@@ -30,10 +30,8 @@ export default function MyPlaylists() {
                         </div>
                     </ScrollableContent>
 
-                    <ScrollableContent>
-                        {page == pages.collections && <PlaylistList />}
-                        {page == pages.likes && <FavoriteList />}
-                    </ScrollableContent>
+                    {page == pages.collections && <PlaylistList />}
+                    {page == pages.likes && <FavoriteList />}
                 </SidebarWrapper>
             </div>
         </CurrentTrackerWrapper>

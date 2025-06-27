@@ -6,6 +6,16 @@
             @apply border-red-600;
         }
 
+        &.no-icon {
+            .input {
+                @apply pl-5;
+            }
+
+            .input-title {
+                @apply left-[23px];
+            }
+        }
+
         .input {
             @apply pl-16 pr-5 py-5 rounded-[6px] bg-gray-light focus:bg-white-pure outline-none border-2 border-solid border-transparent focus:!border-blue-600;
             @apply text-lg font-quicksand font-medium block w-full;

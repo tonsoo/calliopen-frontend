@@ -7,7 +7,7 @@ import type React from "react";
 
 export interface InputProps extends DefaultProps {
     title: string;
-    icon: string;
+    icon?: string;
     name?: string;
     children?: ReactNode;
     type?: string;
@@ -23,9 +23,9 @@ export default function Input({
 } : InputProps) {
     return (
         <div className={"app-input " + className}>
-            <div className={"container " + (error ? "has-error" : "")}>
+            <div className={["container ", error ? "has-error" : "", icon ? "" : "no-icon"].join(" ")}>
                 <input onBlur={onBlur} ref={ref} onChange={onChange} className="input" placeholder=" " name={name} type={type} />
-                <ReactSVG className="centered-icon icon has-icon aspect-square" src={icon} />
+                {icon && <ReactSVG className="centered-icon icon has-icon aspect-square" src={icon} />}
                 <p className="input-title has-transitions">{title}</p>
                 {children}
             </div>

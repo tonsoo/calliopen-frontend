@@ -222,7 +222,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: "#/components/schemas/CreatePlaylistRequest"
       responses:
@@ -974,11 +974,11 @@ components:
         is_public:
           type: boolean
           example: true
-        cover_id:
+        cover:
           type: string
-          format: uuid
+          format: binary
           nullable: true
-          description: UUID of the cover image File (optional)
+          description: File of the cover
 
     PublishSongRequest:
       type: object

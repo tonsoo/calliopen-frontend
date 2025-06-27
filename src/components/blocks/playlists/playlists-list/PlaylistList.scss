@@ -1,0 +1,15 @@
+.app-playlist-list {
+    @apply flex items-start justify-start gap-4 flex-wrap;
+
+    .create-playlist-content {
+        @apply w-full h-full flex items-center justify-center;
+
+        .icon {
+            @apply w-[50px] h-[50px] object-contain;
+        }
+    }
+
+    .create-playlist-background {
+        @apply bg-main;
+    }
+}

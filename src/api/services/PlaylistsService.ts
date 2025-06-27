@@ -66,13 +66,13 @@ export class PlaylistsService {
     /**
      * Create a new playlist for a user
      * @param clientUuid UUID of the client
-     * @param requestBody
+     * @param formData
      * @returns Playlist Playlist created successfully
      * @throws ApiError
      */
     public static createPlaylist(
         clientUuid: string,
-        requestBody: CreatePlaylistRequest,
+        formData: CreatePlaylistRequest,
     ): CancelablePromise<Playlist> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -80,8 +80,8 @@ export class PlaylistsService {
             path: {
                 'clientUuid': clientUuid,
             },
-            body: requestBody,
-            mediaType: 'application/json',
+            formData: formData,
+            mediaType: 'multipart/form-data',
             errors: {
                 401: `Authentication required or invalid token.`,
                 403: `User does not have permission to perform this action.`,

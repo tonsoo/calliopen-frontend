@@ -7,7 +7,7 @@ import type { Playlist, Song } from "../../../../../api";
 import type { ReactNode } from "react";
 import AddSongSvg from '../../../../../assets/icons/actions/add-song.svg';
 import PlaylistService from "../../../../../http/services/playlist-services";
-import { useQueryClient } from "@tanstack/react-query";
+import { Query, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "../../../../../App";
 
 interface SongContextWrapperProps extends DefaultProps {
@@ -25,7 +25,12 @@ export default function SongContextWrapper({
 
     const handlePlaylistSelection = async (playlist: Playlist) => {
         await new PlaylistService().addSong(userUuid!, playlist.uuid!, song.uuid!);
-        queryClient.invalidateQueries({ queryKey: [queryKeys.playlist(playlist.uuid)] });
+        queryClient.invalidateQueries({
+            predicate: (query: Query) => [
+                queryKeys.playlists,
+                queryKeys.playlist(playlist.uuid)
+            ].some((v) => query.queryKey.includes(v))
+        });
     };
 
     const handleRightClick = async (event: React.MouseEvent<HTMLDivElement>) => {

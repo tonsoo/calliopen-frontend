@@ -53,37 +53,35 @@ export default function FavoriteList() {
     
     const totalDuration = favorites?.map((s) => s.duration).reduce((a, b) => a! + b!, 0);
     return (
-        <div className="">
-            <ScrollableContent className="has-current-track">
-                <Cover
-                    name="Favorites"
-                    className="mb-10"
-                    src={FavoriteCoder!}
-                    totalDuration={totalDuration!}
-                    creatorName={user.name}
-                    totalSongs={favorites?.length}
-                >
-                    {favorites != null && favorites.length > 1 &&
-                        <>
-                            <TransparentRoundedButton
-                                onClick={handlePlayClicked}
-                                src={PlaySvg}
-                                className="golden-icon"
-                                text="Play all" />
-                            
-                            <TransparentRoundedButton
-                                onClick={handleShuffleClicked}
-                                src={ShuffleSvg}
-                                className="golden-icon"
-                                text="Shuffle all" />
-                        </>
-                    }
-                </Cover>
-                
-                <div className="app-songs-table flex flex-col items-stretch justify-start gap-4">
-                    {favorites?.map((song) => <TableViewChart key={song.uuid} song={song} />)}
-                </div>
-            </ScrollableContent>
-        </div>
+        <ScrollableContent className="has-current-track">
+            <Cover
+                name="Favorites"
+                className="mb-10"
+                src={FavoriteCoder!}
+                totalDuration={totalDuration!}
+                creatorName={user.name}
+                totalSongs={favorites?.length}
+            >
+                {favorites != null && favorites.length > 1 &&
+                    <>
+                        <TransparentRoundedButton
+                            onClick={handlePlayClicked}
+                            src={PlaySvg}
+                            className="golden-icon"
+                            text="Play all" />
+                        
+                        <TransparentRoundedButton
+                            onClick={handleShuffleClicked}
+                            src={ShuffleSvg}
+                            className="golden-icon"
+                            text="Shuffle all" />
+                    </>
+                }
+            </Cover>
+            
+            <div className="app-songs-table flex flex-col items-stretch justify-start gap-4">
+                {favorites?.map((song) => <TableViewChart key={song.uuid} song={song} />)}
+            </div>
+        </ScrollableContent>
     );
 }

@@ -1,0 +1,11 @@
+.app-playlist-creation-form {
+    @apply flex flex-col gap-4 px-3 py-4;
+
+    .form-title {
+        @apply text-white-pure font-quicksand text-3xl mb-3 font-bold text-center;
+    }
+
+    .button-text {
+        @apply text-white-pure font-quicksand font-medium text-base;
+    }
+}

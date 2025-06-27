@@ -4,26 +4,36 @@ import formatDuration from "../../../helpers/time";
 import type DefaultProps from "../../../traits/DefaultProps";
 import './PlaylistCard.scss';
 import { routesList } from "../../../AppRoutes";
+import Card from "../card/Card";
+import stringToColor from "../../../helpers/colors";
 
-interface PlaylistProps extends DefaultProps {
+interface PlaylistCardProps extends DefaultProps {
     playlist: Playlist;
 }
 
-export default function Playlist({
+export default function PlaylistCard({
     className = "", playlist
-} : PlaylistProps) {
+} : PlaylistCardProps) {
     const navigate = useNavigate();
 
     const handleClick = () => navigate(routesList.playlist.link(playlist.uuid!));
+
+    let background = <img className="cover" src={playlist.cover!} alt={playlist.name} />;
+    if (!playlist.cover) {
+        background = <div className="cover" style={{background: stringToColor(playlist.name!)}}></div>;
+    }
+    const content = (
+        <>
+            <p className="title">{playlist.name}</p>
+            <p className="author">~ {formatDuration(playlist.total_duration! / 1000, true)}</p>
+        </>
+    );
     
     return (
-        <div onClick={handleClick} className={"app-playlist hoverable " + className}>
-            <img className="cover" src={playlist.cover!} alt={playlist.name} />
-
-            <div className="content">
-                <p className="title">{playlist.name}</p>
-                <p className="author">~ {formatDuration(playlist.total_duration! / 1000, true)}</p>
-            </div>
-        </div>
+        <Card
+            background={background}
+            content={content}
+            className={"app-playlist-card " + className}
+            onClick={handleClick} />
     );
 }

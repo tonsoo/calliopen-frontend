@@ -22,6 +22,6 @@ jobs:
     with:
       repo: tonsoo/calliopen-frontend
       app-name: calliopen-webapp
-      domain: app.calliopen.com.br
+      domain: app.m.calliopen.com.br
       sub-domain: dev # Your dev branches will be accessible at branch.dev.example.com
       add-to-deploys: true # Will create an entry in your deploys lists

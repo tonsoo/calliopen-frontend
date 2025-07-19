@@ -119,7 +119,7 @@ docker-compose up --build
 ```
 
 ## Api docs
-A documentação da API para desenvolvimento pode ser encontrada em https://calliopen.com.br/api/documentation
+A documentação da API para desenvolvimento pode ser encontrada em https://m.calliopen.com.br/api/documentation
 
 ## Contribuição
 Pull requests são bem-vindos! Siga o padrão de código, escreva componentes reutilizáveis e utilize os providers/contextos globais quando necessário.

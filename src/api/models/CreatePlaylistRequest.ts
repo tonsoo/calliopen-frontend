@@ -4,7 +4,7 @@
 /* eslint-disable */
 export type CreatePlaylistRequest = {
     name: string;
-    is_public: boolean;
+    is_public: string;
     /**
      * File of the cover
      */
